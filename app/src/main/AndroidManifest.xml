@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+      Permissions, and why each one exists:
+      * POST_NOTIFICATIONS — study reminders on Android 13+ only; Android 8-12 need nothing.
+
+      There is deliberately **no** INTERNET permission: reading aloud is done by the device's own
+      text-to-speech service, so every feature — learning, review, the mistake book, closed-book
+      exams, statistics and import/export — works with no network at all. No account system,
+      analytics, ads, cloud sync or third-party audio download is bundled.
+
+      ACCESS_NETWORK_STATE is not declared here either. It appears in the merged manifest only
+      because androidx.work (study reminders) declares it for its network constraints; the app
+      itself never reads connectivity.
+    -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:name=".CetVocabApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CetVocab">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|density|fontScale"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/Theme.CetVocab">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

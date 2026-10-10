@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "note": "Built-in vocabulary shipped with the app. The JSON files are produced by tools/wordpack/build_packs.py from skywind3000/ECDICT (MIT) and validated by tools/wordpack/validate_packs.py; see docs/WORD_PACK_VALIDATION.md for the measured counts, the licence text and the residual risks.",
+  "packs": [
+    {
+      "id": "builtin-cet4",
+      "asset": "wordpacks/cet4.json",
+      "level": "CET4",
+      "name": "CET-4 词汇",
+      "version": 2,
+      "wordCount": 3849
+    },
+    {
+      "id": "builtin-cet6",
+      "asset": "wordpacks/cet6.json",
+      "level": "CET6",
+      "name": "CET-6 词汇",
+      "version": 2,
+      "wordCount": 5407
+    }
+  ]
+}

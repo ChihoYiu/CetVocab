@@ -1,0 +1,69 @@
+{
+  "version": 2,
+  "sourceRepo": "https://github.com/skywind3000/ECDICT",
+  "sourceCommit": "bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b",
+  "sourceUrls": {
+    "CET4": "https://raw.githubusercontent.com/skywind3000/ECDICT/bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b/ecdict.csv",
+    "CET6": "https://raw.githubusercontent.com/skywind3000/ECDICT/bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b/ecdict.csv"
+  },
+  "sourceFiles": {
+    "CET4": "ecdict.csv",
+    "CET6": "ecdict.csv"
+  },
+  "licence": "MIT",
+  "licenceUrl": "https://raw.githubusercontent.com/skywind3000/ECDICT/bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b/LICENSE",
+  "licenceName": "MIT License",
+  "licenceCopyright": "Copyright (c) 2025 Linwei",
+  "downloadedAt": "2026-10-10T02:58:00Z",
+  "generatedAt": "2026-10-10T02:58:00Z",
+  "transformNotes": "Rows of ECDICT ecdict.csv whose 'tag' column contains cet4 / cet6 respectively; one word pack per level. 'meanings' comes from splitting the source 'translation' cell on newlines (a literal backslash-n in a few rows is treated as a newline too). A leading part-of-speech marker (n. / v. / vt. / vi. / a. / adv. ...) is removed from the meaning text and recorded in 'partOfSpeech' only when the whole entry uses exactly one distinct marker; entries with mixed markers keep their text verbatim, marker included. 'phonetic' is the source 'phonetic' column with one leading and trailing slash added when absent; ECDICT carries a single transcription, so phoneticUs and phoneticUk are empty strings and 'phonetic' holds that single value. ECDICT has no example sentences, no collocations and no separate US/UK phonetics, so those fields are empty rather than invented. Rows with an empty word or an empty translation were dropped; case-insensitive duplicates inside one list kept the richest row. 'id' is level + 1-based index in the emitted order.",
+  "wordCounts": {
+    "CET4": 3849,
+    "CET6": 5407
+  },
+  "fieldCoverage": {
+    "CET4": {
+      "sourceRows": 3849,
+      "words": 3849,
+      "phonetic": 3837,
+      "phoneticUs": 0,
+      "phoneticUk": 0,
+      "partOfSpeech": 1988,
+      "meanings": 3849,
+      "exampleSentence": 0,
+      "exampleTranslation": 0,
+      "collocations": 0,
+      "duplicatesInList": 0,
+      "droppedEmptyWord": 0,
+      "droppedEmptyMeanings": 0
+    },
+    "CET6": {
+      "sourceRows": 5407,
+      "words": 5407,
+      "phonetic": 5382,
+      "phoneticUs": 0,
+      "phoneticUk": 0,
+      "partOfSpeech": 3055,
+      "meanings": 5407,
+      "exampleSentence": 0,
+      "exampleTranslation": 0,
+      "collocations": 0,
+      "duplicatesInList": 0,
+      "droppedEmptyWord": 0,
+      "droppedEmptyMeanings": 0
+    }
+  },
+  "phoneticUsAvailable": false,
+  "phoneticUkAvailable": false,
+  "phoneticNormalization": {
+    "applied": true,
+    "replaced": {
+      "U+04D9 CYRILLIC SMALL LETTER SCHWA": "U+0259 LATIN SMALL LETTER SCHWA",
+      "U+0454 CYRILLIC SMALL LETTER UKRAINIAN IE": "U+025B LATIN SMALL LETTER OPEN E",
+      "U+0027 APOSTROPHE (stress)": "U+02C8 MODIFIER LETTER VERTICAL LINE",
+      "U+003A COLON (length)": "U+02D0 MODIFIER LETTER TRIANGULAR COLON"
+    },
+    "script": "tools/wordpack/normalize_phonetics.py",
+    "note": "Pure notation transliteration of the source's Kingsoft-style phonetics; no pronunciation was added, changed or invented."
+  }
+}

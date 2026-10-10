@@ -1,0 +1,220 @@
+{
+  "CET4": {
+    "file": "cet4.json",
+    "sizeBytes": 1337450,
+    "sizeKiB": 1306.1,
+    "sizeMiB": 1.275,
+    "packKeysOk": true,
+    "declaredLevel": "CET4",
+    "allRowsLevelMatch": true,
+    "count": 3849,
+    "badKeyRows": 0,
+    "missingKeyExamples": [],
+    "nonAsciiLetter": {
+      "count": 0,
+      "sample": []
+    },
+    "whitespace": {
+      "count": 0,
+      "sample": []
+    },
+    "tooShort": {
+      "count": 0,
+      "sample": []
+    },
+    "tooLong": {
+      "count": 0,
+      "sample": []
+    },
+    "noLetter": {
+      "count": 0,
+      "sample": []
+    },
+    "duplicateIds": [],
+    "idFormatBad": 0,
+    "idStableSequential": true,
+    "duplicateLowerInList": {
+      "count": 0,
+      "words": []
+    },
+    "duplicateExactInList": {
+      "count": 0,
+      "words": []
+    },
+    "empties": {
+      "phonetic": {
+        "empty": 12,
+        "present": 3837,
+        "emptyPct": 0.31
+      },
+      "phoneticUs": {
+        "empty": 3849,
+        "present": 0,
+        "emptyPct": 100.0
+      },
+      "phoneticUk": {
+        "empty": 3849,
+        "present": 0,
+        "emptyPct": 100.0
+      },
+      "partOfSpeech": {
+        "empty": 1861,
+        "present": 1988,
+        "emptyPct": 48.35
+      },
+      "exampleSentence": {
+        "empty": 3849,
+        "present": 0,
+        "emptyPct": 100.0
+      },
+      "exampleTranslation": {
+        "empty": 3849,
+        "present": 0,
+        "emptyPct": 100.0
+      },
+      "meanings": {
+        "empty": 0,
+        "present": 3849,
+        "emptyPct": 0.0
+      },
+      "collocations": {
+        "empty": 3849,
+        "present": 0,
+        "emptyPct": 100.0
+      }
+    },
+    "maxMeanings": 6,
+    "meaningsTotal": 8304
+  },
+  "CET6": {
+    "file": "cet6.json",
+    "sizeBytes": 1866961,
+    "sizeKiB": 1823.2,
+    "sizeMiB": 1.78,
+    "packKeysOk": true,
+    "declaredLevel": "CET6",
+    "allRowsLevelMatch": true,
+    "count": 5407,
+    "badKeyRows": 0,
+    "missingKeyExamples": [],
+    "nonAsciiLetter": {
+      "count": 0,
+      "sample": []
+    },
+    "whitespace": {
+      "count": 0,
+      "sample": []
+    },
+    "tooShort": {
+      "count": 0,
+      "sample": []
+    },
+    "tooLong": {
+      "count": 0,
+      "sample": []
+    },
+    "noLetter": {
+      "count": 0,
+      "sample": []
+    },
+    "duplicateIds": [],
+    "idFormatBad": 0,
+    "idStableSequential": true,
+    "duplicateLowerInList": {
+      "count": 0,
+      "words": []
+    },
+    "duplicateExactInList": {
+      "count": 0,
+      "words": []
+    },
+    "empties": {
+      "phonetic": {
+        "empty": 25,
+        "present": 5382,
+        "emptyPct": 0.46
+      },
+      "phoneticUs": {
+        "empty": 5407,
+        "present": 0,
+        "emptyPct": 100.0
+      },
+      "phoneticUk": {
+        "empty": 5407,
+        "present": 0,
+        "emptyPct": 100.0
+      },
+      "partOfSpeech": {
+        "empty": 2352,
+        "present": 3055,
+        "emptyPct": 43.5
+      },
+      "exampleSentence": {
+        "empty": 5407,
+        "present": 0,
+        "emptyPct": 100.0
+      },
+      "exampleTranslation": {
+        "empty": 5407,
+        "present": 0,
+        "emptyPct": 100.0
+      },
+      "meanings": {
+        "empty": 0,
+        "present": 5407,
+        "emptyPct": 0.0
+      },
+      "collocations": {
+        "empty": 5407,
+        "present": 0,
+        "emptyPct": 100.0
+      }
+    },
+    "maxMeanings": 6,
+    "meaningsTotal": 11223
+  },
+  "overlap": {
+    "count": 3451,
+    "first20": [
+      "abandon",
+      "abnormal",
+      "absence",
+      "absent",
+      "absolute",
+      "absorb",
+      "abstract",
+      "abuse",
+      "academic",
+      "academy",
+      "accelerate",
+      "acceptance",
+      "access",
+      "accessory",
+      "accidental",
+      "accommodate",
+      "accommodation",
+      "accompany",
+      "accord",
+      "accordance"
+    ],
+    "onlyCet4": 398,
+    "onlyCet6": 1956,
+    "union": 5805
+  },
+  "completeness": {
+    "CET4": {
+      "sourceRowsWithTag": 3849,
+      "sourceDistinctLowercase": 3849,
+      "packWords": 3849,
+      "sourceNotInPack": [],
+      "packNotInSource": []
+    },
+    "CET6": {
+      "sourceRowsWithTag": 5407,
+      "sourceDistinctLowercase": 5407,
+      "packWords": 5407,
+      "sourceNotInPack": [],
+      "packNotInSource": []
+    }
+  }
+}

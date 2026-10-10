@@ -1,0 +1,129 @@
+{
+  "timestamp": "2026-10-10T04:04:33.405111+00:00",
+  "coverage": {
+    "a_both_words": [
+      "apple"
+    ],
+    "a_both": 1,
+    "ab_both_words": [
+      "apple"
+    ],
+    "ab_both": 1,
+    "none_words": [
+      "internationalization",
+      "characteristically",
+      "well-being"
+    ],
+    "none": 3,
+    "confirmed_none_words": [
+      "internationalization",
+      "characteristically"
+    ],
+    "unverified_words": [
+      "well-being"
+    ],
+    "us_words": [
+      "apple",
+      "abandon",
+      "ability",
+      "misunderstanding",
+      "rhythm",
+      "queue",
+      "xylophone",
+      "x-ray",
+      "don't",
+      "naive",
+      "rendezvous"
+    ],
+    "us_count": 11,
+    "us_missing": [
+      "internationalization",
+      "characteristically",
+      "well-being"
+    ],
+    "uk_words": [
+      "apple"
+    ],
+    "uk_count": 1,
+    "uk_missing": [
+      "abandon",
+      "ability",
+      "internationalization",
+      "characteristically",
+      "misunderstanding",
+      "rhythm",
+      "queue",
+      "xylophone",
+      "well-being",
+      "x-ray",
+      "don't",
+      "naive",
+      "rendezvous"
+    ],
+    "us_only_words": [
+      "abandon",
+      "ability",
+      "misunderstanding",
+      "rhythm",
+      "queue",
+      "xylophone",
+      "x-ray",
+      "don't",
+      "naive",
+      "rendezvous"
+    ],
+    "uk_only_words": [],
+    "a_us_count": 11,
+    "a_uk_count": 1,
+    "b_consulted": 6
+  },
+  "verdicts": {
+    "apple": "US+UK distinct",
+    "abandon": "US only",
+    "ability": "US only",
+    "internationalization": "neither",
+    "characteristically": "neither",
+    "misunderstanding": "US only",
+    "rhythm": "US only (UK unverified: B not consulted)",
+    "queue": "US only (UK unverified: B not consulted)",
+    "xylophone": "US only (UK unverified: B not consulted)",
+    "well-being": "neither (B not consulted)",
+    "x-ray": "US only (UK unverified: B not consulted)",
+    "don't": "US only (UK unverified: B not consulted)",
+    "naive": "US only (UK unverified: B not consulted)",
+    "rendezvous": "US only (UK unverified: B not consulted)"
+  },
+  "byte_proofs": [
+    {
+      "word": "apple",
+      "us_url": "https://upload.wikimedia.org/wikipedia/commons/9/9a/En-us-apple.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "uk_url": "https://upload.wikimedia.org/wikipedia/commons/c/c8/En-uk-apple.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "us_sha1": "3f8c6ca43d97920a12e2abf17b7832525e10b21c",
+      "uk_sha1": "c147ea0c178c3f6c285a6875782a4ba478080903",
+      "different_bytes": true
+    }
+  ],
+  "anomalies": [
+    "`apple` / Source B: request failed at transport level: transport failure on all 4 attempts (last: TimeoutError: The read operation timed out)",
+    "`abandon` / Source B: request failed at transport level: transport failure on all 4 attempts (last: TimeoutError: The read operation timed out)",
+    "`internationalization` / Source B: request failed at transport level: transport failure on all 4 attempts (last: TimeoutError: The read operation timed out)",
+    "`characteristically` / Source B: request failed at transport level: transport failure on all 4 attempts (last: TimeoutError: The read operation timed out)",
+    "`misunderstanding` / Source B: request failed at transport level: transport failure on all 4 attempts (last: TimeoutError: The read operation timed out)",
+    "`rhythm` / Source B: Source B not consulted: circuit opened after 3 consecutive transport failures",
+    "`queue` / Source B: Source B not consulted: circuit opened after 3 consecutive transport failures",
+    "`xylophone` / Source B: Source B not consulted: circuit opened after 3 consecutive transport failures",
+    "`well-being` / Source B: Source B not consulted: circuit opened after 3 consecutive transport failures",
+    "`x-ray` / Source B: Source B not consulted: circuit opened after 3 consecutive transport failures",
+    "`don't` / Source A US: resolved URL contains percent-encoded characters: https://upload.wikimedia.org/wikipedia/commons/8/87/En-us-don%27t.ogg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+    "`don't` / Source B: Source B not consulted: circuit opened after 3 consecutive transport failures",
+    "`naive` / Source B: Source B not consulted: circuit opened after 3 consecutive transport failures",
+    "`rendezvous` / Source B: Source B not consulted: circuit opened after 3 consecutive transport failures",
+    "`abandon` / download US: flaky transport: HTTP 429; waited 10s before retrying (Retry-After: 10); HTTP 429; waited 10s before retrying (Retry-After: 10); HTTP 429; waited 10s before retrying (Retry-After: 10)",
+    "`abandon` / download US: HTTP 429 (expected 200)",
+    "`abandon` / download US: Content-Type is HTML, not audio: text/html; charset=utf-8",
+    "`ability` / download US: flaky transport: HTTP 429; waited 10s before retrying (Retry-After: 10); HTTP 429; waited 10s before retrying (Retry-After: 10); HTTP 429; waited 10s before retrying (Retry-After: 10)",
+    "`misunderstanding` / download US: flaky transport: HTTP 429; waited 10s before retrying (Retry-After: 10); HTTP 429; waited 10s before retrying (Retry-After: 10); HTTP 429; waited 10s before retrying (Retry-After: 10)",
+    "`misunderstanding` / download US: HTTP 429 (expected 200)",
+    "`misunderstanding` / download US: Content-Type is HTML, not audio: text/html; charset=utf-8"
+  ]
+}

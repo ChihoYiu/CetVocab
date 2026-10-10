@@ -1,0 +1,1360 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "c56e0719ae1756e7014031da1e72c318",
+    "entities": [
+      {
+        "tableName": "word_pack",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `level` TEXT NOT NULL, `description` TEXT NOT NULL, `source` TEXT NOT NULL, `license` TEXT NOT NULL, `version` TEXT NOT NULL, `is_built_in` INTEGER NOT NULL, `word_count` INTEGER NOT NULL, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "description",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "license",
+            "columnName": "license",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "version",
+            "columnName": "version",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isBuiltIn",
+            "columnName": "is_built_in",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wordCount",
+            "columnName": "word_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_word_pack_level",
+            "unique": false,
+            "columnNames": [
+              "level"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_word_pack_level` ON `${TABLE_NAME}` (`level`)"
+          },
+          {
+            "name": "index_word_pack_is_built_in",
+            "unique": false,
+            "columnNames": [
+              "is_built_in"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_word_pack_is_built_in` ON `${TABLE_NAME}` (`is_built_in`)"
+          }
+        ]
+      },
+      {
+        "tableName": "word",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `pack_id` TEXT, `external_id` TEXT, `word` TEXT NOT NULL, `normalized_word` TEXT NOT NULL, `phonetic` TEXT NOT NULL, `part_of_speech` TEXT NOT NULL, `meanings` TEXT NOT NULL, `example_sentence` TEXT NOT NULL, `example_translation` TEXT NOT NULL, `collocations` TEXT NOT NULL, `level` TEXT NOT NULL, `source` TEXT NOT NULL, `license` TEXT NOT NULL, `audio_uri` TEXT, `created_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packId",
+            "columnName": "pack_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "externalId",
+            "columnName": "external_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "word",
+            "columnName": "word",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "normalizedWord",
+            "columnName": "normalized_word",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phonetic",
+            "columnName": "phonetic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "partOfSpeech",
+            "columnName": "part_of_speech",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "meanings",
+            "columnName": "meanings",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exampleSentence",
+            "columnName": "example_sentence",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "exampleTranslation",
+            "columnName": "example_translation",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "collocations",
+            "columnName": "collocations",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "license",
+            "columnName": "license",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "audioUri",
+            "columnName": "audio_uri",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_word_level_normalized_word",
+            "unique": true,
+            "columnNames": [
+              "level",
+              "normalized_word"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_word_level_normalized_word` ON `${TABLE_NAME}` (`level`, `normalized_word`)"
+          },
+          {
+            "name": "index_word_pack_id",
+            "unique": false,
+            "columnNames": [
+              "pack_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_word_pack_id` ON `${TABLE_NAME}` (`pack_id`)"
+          },
+          {
+            "name": "index_word_word",
+            "unique": false,
+            "columnNames": [
+              "word"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_word_word` ON `${TABLE_NAME}` (`word`)"
+          },
+          {
+            "name": "index_word_level",
+            "unique": false,
+            "columnNames": [
+              "level"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_word_level` ON `${TABLE_NAME}` (`level`)"
+          }
+        ]
+      },
+      {
+        "tableName": "user_word_progress",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word_id` INTEGER NOT NULL, `status` TEXT NOT NULL, `mastery_level` INTEGER NOT NULL, `repetitions` INTEGER NOT NULL, `interval_days` INTEGER NOT NULL, `ease_factor` REAL NOT NULL, `due_at` INTEGER NOT NULL, `last_reviewed_at` INTEGER, `last_answer` TEXT, `lapse_count` INTEGER NOT NULL, `wrong_count` INTEGER NOT NULL, `fuzzy_count` INTEGER NOT NULL, `consecutive_correct_count` INTEGER NOT NULL, `is_favorite` INTEGER NOT NULL, `introduced_at` INTEGER, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`word_id`), FOREIGN KEY(`word_id`) REFERENCES `word`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "wordId",
+            "columnName": "word_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "masteryLevel",
+            "columnName": "mastery_level",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repetitions",
+            "columnName": "repetitions",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "intervalDays",
+            "columnName": "interval_days",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "easeFactor",
+            "columnName": "ease_factor",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dueAt",
+            "columnName": "due_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastReviewedAt",
+            "columnName": "last_reviewed_at",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "lastAnswer",
+            "columnName": "last_answer",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "lapseCount",
+            "columnName": "lapse_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wrongCount",
+            "columnName": "wrong_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fuzzyCount",
+            "columnName": "fuzzy_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "consecutiveCorrectCount",
+            "columnName": "consecutive_correct_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "is_favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "introducedAt",
+            "columnName": "introduced_at",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "word_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_user_word_progress_word_id",
+            "unique": false,
+            "columnNames": [
+              "word_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_word_progress_word_id` ON `${TABLE_NAME}` (`word_id`)"
+          },
+          {
+            "name": "index_user_word_progress_due_at",
+            "unique": false,
+            "columnNames": [
+              "due_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_word_progress_due_at` ON `${TABLE_NAME}` (`due_at`)"
+          },
+          {
+            "name": "index_user_word_progress_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_word_progress_status` ON `${TABLE_NAME}` (`status`)"
+          },
+          {
+            "name": "index_user_word_progress_wrong_count",
+            "unique": false,
+            "columnNames": [
+              "wrong_count"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_word_progress_wrong_count` ON `${TABLE_NAME}` (`wrong_count`)"
+          },
+          {
+            "name": "index_user_word_progress_last_reviewed_at",
+            "unique": false,
+            "columnNames": [
+              "last_reviewed_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_word_progress_last_reviewed_at` ON `${TABLE_NAME}` (`last_reviewed_at`)"
+          },
+          {
+            "name": "index_user_word_progress_is_favorite",
+            "unique": false,
+            "columnNames": [
+              "is_favorite"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_user_word_progress_is_favorite` ON `${TABLE_NAME}` (`is_favorite`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "word",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "word_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "review_event",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `word_id` INTEGER NOT NULL, `session_id` INTEGER, `grade` TEXT NOT NULL, `source` TEXT NOT NULL, `answered_at` INTEGER NOT NULL, `day_key` TEXT NOT NULL, `level` TEXT NOT NULL, `previous_interval_days` INTEGER NOT NULL, `new_interval_days` INTEGER NOT NULL, `response_time_ms` INTEGER, FOREIGN KEY(`word_id`) REFERENCES `word`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wordId",
+            "columnName": "word_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionId",
+            "columnName": "session_id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "grade",
+            "columnName": "grade",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "source",
+            "columnName": "source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "answeredAt",
+            "columnName": "answered_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "dayKey",
+            "columnName": "day_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "previousIntervalDays",
+            "columnName": "previous_interval_days",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newIntervalDays",
+            "columnName": "new_interval_days",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "responseTimeMs",
+            "columnName": "response_time_ms",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_review_event_word_id",
+            "unique": false,
+            "columnNames": [
+              "word_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_event_word_id` ON `${TABLE_NAME}` (`word_id`)"
+          },
+          {
+            "name": "index_review_event_answered_at",
+            "unique": false,
+            "columnNames": [
+              "answered_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_event_answered_at` ON `${TABLE_NAME}` (`answered_at`)"
+          },
+          {
+            "name": "index_review_event_day_key",
+            "unique": false,
+            "columnNames": [
+              "day_key"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_event_day_key` ON `${TABLE_NAME}` (`day_key`)"
+          },
+          {
+            "name": "index_review_event_grade",
+            "unique": false,
+            "columnNames": [
+              "grade"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_event_grade` ON `${TABLE_NAME}` (`grade`)"
+          },
+          {
+            "name": "index_review_event_source",
+            "unique": false,
+            "columnNames": [
+              "source"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_review_event_source` ON `${TABLE_NAME}` (`source`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "word",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "word_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "wrong_answer",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`word_id` INTEGER NOT NULL, `wrong_count` INTEGER NOT NULL, `fuzzy_count` INTEGER NOT NULL, `first_wrong_at` INTEGER NOT NULL, `last_wrong_at` INTEGER NOT NULL, `last_source` TEXT NOT NULL, `correct_since_wrong` INTEGER NOT NULL, `resolved_at` INTEGER, `is_favorite` INTEGER NOT NULL, `level` TEXT NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`word_id`), FOREIGN KEY(`word_id`) REFERENCES `word`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "wordId",
+            "columnName": "word_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wrongCount",
+            "columnName": "wrong_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fuzzyCount",
+            "columnName": "fuzzy_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstWrongAt",
+            "columnName": "first_wrong_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastWrongAt",
+            "columnName": "last_wrong_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastSource",
+            "columnName": "last_source",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctSinceWrong",
+            "columnName": "correct_since_wrong",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "resolvedAt",
+            "columnName": "resolved_at",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isFavorite",
+            "columnName": "is_favorite",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "word_id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_wrong_answer_word_id",
+            "unique": false,
+            "columnNames": [
+              "word_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_wrong_answer_word_id` ON `${TABLE_NAME}` (`word_id`)"
+          },
+          {
+            "name": "index_wrong_answer_last_wrong_at",
+            "unique": false,
+            "columnNames": [
+              "last_wrong_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_wrong_answer_last_wrong_at` ON `${TABLE_NAME}` (`last_wrong_at`)"
+          },
+          {
+            "name": "index_wrong_answer_wrong_count",
+            "unique": false,
+            "columnNames": [
+              "wrong_count"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_wrong_answer_wrong_count` ON `${TABLE_NAME}` (`wrong_count`)"
+          },
+          {
+            "name": "index_wrong_answer_resolved_at",
+            "unique": false,
+            "columnNames": [
+              "resolved_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_wrong_answer_resolved_at` ON `${TABLE_NAME}` (`resolved_at`)"
+          },
+          {
+            "name": "index_wrong_answer_is_favorite",
+            "unique": false,
+            "columnNames": [
+              "is_favorite"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_wrong_answer_is_favorite` ON `${TABLE_NAME}` (`is_favorite`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "word",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "word_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "study_session",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `level` TEXT NOT NULL, `status` TEXT NOT NULL, `started_at` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, `ended_at` INTEGER, `planned_new_count` INTEGER NOT NULL, `planned_review_count` INTEGER NOT NULL, `queue` TEXT NOT NULL, `queue_position` INTEGER NOT NULL, `immediate_queue` TEXT NOT NULL, `immediate_repeat_counts` TEXT NOT NULL, `answered_count` INTEGER NOT NULL, `mastered_count` INTEGER NOT NULL, `fuzzy_count` INTEGER NOT NULL, `unknown_count` INTEGER NOT NULL, `new_words_seen` INTEGER NOT NULL, `review_words_seen` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "started_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endedAt",
+            "columnName": "ended_at",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "plannedNewCount",
+            "columnName": "planned_new_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "plannedReviewCount",
+            "columnName": "planned_review_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queue",
+            "columnName": "queue",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "queuePosition",
+            "columnName": "queue_position",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "immediateQueue",
+            "columnName": "immediate_queue",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "immediateRepeatCounts",
+            "columnName": "immediate_repeat_counts",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "answeredCount",
+            "columnName": "answered_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "masteredCount",
+            "columnName": "mastered_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fuzzyCount",
+            "columnName": "fuzzy_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unknownCount",
+            "columnName": "unknown_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newWordsSeen",
+            "columnName": "new_words_seen",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reviewWordsSeen",
+            "columnName": "review_words_seen",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_study_session_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_study_session_status` ON `${TABLE_NAME}` (`status`)"
+          },
+          {
+            "name": "index_study_session_level",
+            "unique": false,
+            "columnNames": [
+              "level"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_study_session_level` ON `${TABLE_NAME}` (`level`)"
+          },
+          {
+            "name": "index_study_session_updated_at",
+            "unique": false,
+            "columnNames": [
+              "updated_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_study_session_updated_at` ON `${TABLE_NAME}` (`updated_at`)"
+          }
+        ]
+      },
+      {
+        "tableName": "exam_session",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `level` TEXT NOT NULL, `status` TEXT NOT NULL, `created_at` INTEGER NOT NULL, `started_at` INTEGER NOT NULL, `submitted_at` INTEGER, `question_count` INTEGER NOT NULL, `duration_minutes` INTEGER NOT NULL, `remaining_seconds` INTEGER NOT NULL, `score` INTEGER, `correct_count` INTEGER, `accuracy_percent` INTEGER, `time_spent_ms` INTEGER, `type_breakdown` TEXT, `seed` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createdAt",
+            "columnName": "created_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startedAt",
+            "columnName": "started_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "submittedAt",
+            "columnName": "submitted_at",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "questionCount",
+            "columnName": "question_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "durationMinutes",
+            "columnName": "duration_minutes",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "remainingSeconds",
+            "columnName": "remaining_seconds",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "score",
+            "columnName": "score",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "correctCount",
+            "columnName": "correct_count",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "accuracyPercent",
+            "columnName": "accuracy_percent",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "timeSpentMs",
+            "columnName": "time_spent_ms",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "typeBreakdown",
+            "columnName": "type_breakdown",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "seed",
+            "columnName": "seed",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_exam_session_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_exam_session_status` ON `${TABLE_NAME}` (`status`)"
+          },
+          {
+            "name": "index_exam_session_level",
+            "unique": false,
+            "columnNames": [
+              "level"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_exam_session_level` ON `${TABLE_NAME}` (`level`)"
+          },
+          {
+            "name": "index_exam_session_created_at",
+            "unique": false,
+            "columnNames": [
+              "created_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_exam_session_created_at` ON `${TABLE_NAME}` (`created_at`)"
+          }
+        ]
+      },
+      {
+        "tableName": "exam_question",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `exam_id` INTEGER NOT NULL, `order_index` INTEGER NOT NULL, `word_id` INTEGER NOT NULL, `type` TEXT NOT NULL, `prompt` TEXT NOT NULL, `prompt_phonetic` TEXT NOT NULL, `options` TEXT NOT NULL, `correct_option_index` INTEGER NOT NULL, `correct_answer` TEXT NOT NULL, `given_answer` TEXT, `is_correct` INTEGER, `answered_at` INTEGER, FOREIGN KEY(`exam_id`) REFERENCES `exam_session`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`word_id`) REFERENCES `word`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "examId",
+            "columnName": "exam_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderIndex",
+            "columnName": "order_index",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "wordId",
+            "columnName": "word_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "prompt",
+            "columnName": "prompt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "promptPhonetic",
+            "columnName": "prompt_phonetic",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "options",
+            "columnName": "options",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctOptionIndex",
+            "columnName": "correct_option_index",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "correctAnswer",
+            "columnName": "correct_answer",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "givenAnswer",
+            "columnName": "given_answer",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isCorrect",
+            "columnName": "is_correct",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "answeredAt",
+            "columnName": "answered_at",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_exam_question_exam_id_order_index",
+            "unique": true,
+            "columnNames": [
+              "exam_id",
+              "order_index"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_exam_question_exam_id_order_index` ON `${TABLE_NAME}` (`exam_id`, `order_index`)"
+          },
+          {
+            "name": "index_exam_question_word_id",
+            "unique": false,
+            "columnNames": [
+              "word_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_exam_question_word_id` ON `${TABLE_NAME}` (`word_id`)"
+          },
+          {
+            "name": "index_exam_question_is_correct",
+            "unique": false,
+            "columnNames": [
+              "is_correct"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_exam_question_is_correct` ON `${TABLE_NAME}` (`is_correct`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "exam_session",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "exam_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "word",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "word_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "daily_study_summary",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`day_key` TEXT NOT NULL, `level` TEXT NOT NULL, `studied_words` INTEGER NOT NULL, `new_words` INTEGER NOT NULL, `review_words` INTEGER NOT NULL, `mastered_count` INTEGER NOT NULL, `fuzzy_count` INTEGER NOT NULL, `unknown_count` INTEGER NOT NULL, `review_events` INTEGER NOT NULL, `study_duration_ms` INTEGER NOT NULL, `sessions_completed` INTEGER NOT NULL, `exams_completed` INTEGER NOT NULL, `exam_correct` INTEGER NOT NULL, `exam_total` INTEGER NOT NULL, `updated_at` INTEGER NOT NULL, PRIMARY KEY(`day_key`, `level`))",
+        "fields": [
+          {
+            "fieldPath": "dayKey",
+            "columnName": "day_key",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "studiedWords",
+            "columnName": "studied_words",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "newWords",
+            "columnName": "new_words",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reviewWords",
+            "columnName": "review_words",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "masteredCount",
+            "columnName": "mastered_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fuzzyCount",
+            "columnName": "fuzzy_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "unknownCount",
+            "columnName": "unknown_count",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "reviewEvents",
+            "columnName": "review_events",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "studyDurationMs",
+            "columnName": "study_duration_ms",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sessionsCompleted",
+            "columnName": "sessions_completed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "examsCompleted",
+            "columnName": "exams_completed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "examCorrect",
+            "columnName": "exam_correct",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "examTotal",
+            "columnName": "exam_total",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updatedAt",
+            "columnName": "updated_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "day_key",
+            "level"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_daily_study_summary_day_key",
+            "unique": false,
+            "columnNames": [
+              "day_key"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_daily_study_summary_day_key` ON `${TABLE_NAME}` (`day_key`)"
+          },
+          {
+            "name": "index_daily_study_summary_level",
+            "unique": false,
+            "columnNames": [
+              "level"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_daily_study_summary_level` ON `${TABLE_NAME}` (`level`)"
+          }
+        ]
+      },
+      {
+        "tableName": "import_history",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `file_name` TEXT NOT NULL, `format` TEXT NOT NULL, `imported_at` INTEGER NOT NULL, `total_rows` INTEGER NOT NULL, `inserted` INTEGER NOT NULL, `updated` INTEGER NOT NULL, `skipped` INTEGER NOT NULL, `failed` INTEGER NOT NULL, `level` TEXT NOT NULL, `pack_id` TEXT, `status` TEXT NOT NULL, `message` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fileName",
+            "columnName": "file_name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "format",
+            "columnName": "format",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "importedAt",
+            "columnName": "imported_at",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "totalRows",
+            "columnName": "total_rows",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "inserted",
+            "columnName": "inserted",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "updated",
+            "columnName": "updated",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "skipped",
+            "columnName": "skipped",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "failed",
+            "columnName": "failed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "level",
+            "columnName": "level",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "packId",
+            "columnName": "pack_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "message",
+            "columnName": "message",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_import_history_imported_at",
+            "unique": false,
+            "columnNames": [
+              "imported_at"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_import_history_imported_at` ON `${TABLE_NAME}` (`imported_at`)"
+          },
+          {
+            "name": "index_import_history_status",
+            "unique": false,
+            "columnNames": [
+              "status"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_import_history_status` ON `${TABLE_NAME}` (`status`)"
+          }
+        ]
+      }
+    ],
+    "views": [
+      {
+        "viewName": "word_with_progress",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT\n            w.id                AS word_id,\n            w.word              AS word,\n            w.phonetic          AS phonetic,\n            w.part_of_speech    AS part_of_speech,\n            w.meanings          AS meanings,\n            w.example_sentence  AS example_sentence,\n            w.example_translation AS example_translation,\n            w.collocations      AS collocations,\n            w.level             AS level,\n            w.source            AS source,\n            w.license           AS license,\n            w.audio_uri         AS audio_uri,\n            w.pack_id           AS pack_id,\n            p.status            AS status,\n            p.mastery_level     AS mastery_level,\n            p.repetitions       AS repetitions,\n            p.interval_days     AS interval_days,\n            p.ease_factor       AS ease_factor,\n            p.due_at            AS due_at,\n            p.last_reviewed_at  AS last_reviewed_at,\n            p.last_answer       AS last_answer,\n            p.lapse_count       AS lapse_count,\n            p.wrong_count       AS wrong_count,\n            p.fuzzy_count       AS fuzzy_count,\n            p.consecutive_correct_count AS consecutive_correct_count,\n            p.is_favorite       AS is_favorite,\n            p.introduced_at     AS introduced_at\n        FROM word w\n        LEFT JOIN user_word_progress p ON p.word_id = w.id"
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c56e0719ae1756e7014031da1e72c318')"
+    ]
+  }
+}

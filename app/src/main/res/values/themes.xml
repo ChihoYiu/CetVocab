@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      A bare Material 3 base theme: Compose renders the whole UI, this only styles the
+      window (background + status/navigation bar) before the first frame and during
+      activity transitions. Keeping it here avoids a white flash on cold start.
+    -->
+    <style name="Theme.CetVocab" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>

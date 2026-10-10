@@ -1,0 +1,23 @@
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/app/build
+/build
+
+# Python helper scripts (tools/wordpack, tools/pronunciation)
+__pycache__/
+*.pyc
+# Network responses cached by the verification scripts; reproducible by re-running them.
+/tools/pronunciation/cache/
+/tools/wordpack/cache/
+
+# Kotlin/Gradle local caches and compiler logs (machine specific, never source)
+.kotlin/
+.kotlin/errors/

@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "name": "示例词库（自建演示数据）",
+  "defaultLevel": "CET4",
+  "source": "CetVocab 示例文件（自建演示数据）",
+  "license": "CC0-1.0",
+  "words": [
+    {
+      "id": "demo-0001",
+      "word": "abandon",
+      "phonetic": "/əˈbændən/",
+      "partOfSpeech": "v.",
+      "meanings": ["放弃；抛弃", "遗弃"],
+      "exampleSentence": "He had to abandon the plan because of the storm.",
+      "exampleTranslation": "由于暴风雪，他不得不放弃这个计划。",
+      "collocations": ["abandon a plan", "abandon hope"],
+      "level": "CET4",
+      "source": "CetVocab 示例文件（自建演示数据）",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "demo-0002",
+      "word": "absorb",
+      "phonetic": "/əbˈzɔːb/",
+      "partOfSpeech": "v.",
+      "meanings": ["吸收", "理解；掌握"],
+      "exampleSentence": "Plants absorb water through their roots.",
+      "exampleTranslation": "植物通过根部吸收水分。",
+      "collocations": ["absorb water", "absorb knowledge"],
+      "level": "CET4",
+      "source": "CetVocab 示例文件（自建演示数据）",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "demo-0003",
+      "word": "accurate",
+      "phonetic": "/ˈækjərət/",
+      "partOfSpeech": "adj.",
+      "meanings": ["准确的；精确的"],
+      "exampleSentence": "The report gives an accurate description of the experiment.",
+      "exampleTranslation": "这份报告对实验做了准确的描述。",
+      "collocations": ["accurate data", "an accurate answer"],
+      "level": "CET4",
+      "source": "CetVocab 示例文件（自建演示数据）",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "demo-0004",
+      "word": "abolish",
+      "phonetic": "/əˈbɒlɪʃ/",
+      "partOfSpeech": "v.",
+      "meanings": ["废除；取消（制度、法律）"],
+      "exampleSentence": "The country abolished the tax last year.",
+      "exampleTranslation": "该国去年废除了这项税收。",
+      "collocations": ["abolish a law", "abolish slavery"],
+      "level": "CET6",
+      "source": "CetVocab 示例文件（自建演示数据）",
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "demo-0005",
+      "word": "ambiguous",
+      "phonetic": "/æmˈbɪɡjuəs/",
+      "partOfSpeech": "adj.",
+      "meanings": ["模棱两可的；含糊不清的"],
+      "exampleSentence": "His answer was ambiguous, so nobody was sure what he meant.",
+      "exampleTranslation": "他的回答含糊不清，没人确定他的意思。",
+      "collocations": ["an ambiguous answer", "ambiguous wording"],
+      "level": "CET6",
+      "source": "CetVocab 示例文件（自建演示数据）",
+      "license": "CC0-1.0"
+    }
+  ]
+}
