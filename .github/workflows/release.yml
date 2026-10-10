@@ -89,6 +89,20 @@ jobs:
         with:
           files: app/build/outputs/apk/release/*.apk
           fail_on_unmatched_files: true
+          # 固定说明头部 + GitHub 自动生成的提交变更列表。
+          generate_release_notes: true
+          body: |
+            **这是用正式密钥签名的安装包**（`app-release.apk`），可以直接安装。
+
+            安装：下载后在手机上允许「安装未知来源应用」；若提示「未通过安全检测」，选择继续安装即可
+            （自有签名包的正常提示）。
+
+            运行要求：Android 8.0（API 26）及以上；朗读功能需要系统已安装文字转语音引擎与英语语音包。
+            不需要联网，**不申请 `INTERNET` 权限**。
+
+            本次构建已通过全部单元测试，并在打包后用 `apksigner verify --print-certs` 校验了签名。
+            使用说明见 [docs/USER_GUIDE.md](https://github.com/ChihoYiu/CetVocab/blob/main/docs/USER_GUIDE.md)；
+            第三方内容许可见 [THIRD-PARTY-NOTICES.md](https://github.com/ChihoYiu/CetVocab/blob/main/THIRD-PARTY-NOTICES.md)。
 
       - name: 清理密钥库
         if: always()
