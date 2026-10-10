@@ -25,30 +25,25 @@
 ### 验证状态
 
 CI 徽章是**真实**的：每次推送到 `main` 或提 PR 都会在 GitHub Actions 上跑全部单元测试并构建调试包
-（见 [.github/workflows/ci.yml](.github/workflows/ci.yml)）。
-
-最近一次在本机（Windows + JDK 25 + Gradle 9.8.1）的完整验证结果：
+（见 [.github/workflows/ci.yml](.github/workflows/ci.yml)）。打 tag 时由
+[release.yml](.github/workflows/release.yml) 构建**已签名**的正式包并在打包后校验签名。
 
 | 项目 | 结果 |
 | --- | --- |
-| 单元测试 `:app:testDebugUnitTest` | **370 个用例通过，0 失败 / 0 错误**（22 个测试类） |
-| 调试包 `:app:assembleDebug` | 成功，14.94 MB |
-| 发布包 `:app:assembleRelease`（R8） | 成功，2.36 MB（**未签名**，签名配置见 [发布签名](docs/RELEASE_SIGNING.md)） |
+| 单元测试 `:app:testDebugUnitTest` | **370 个用例通过，0 失败 / 0 错误**（22 个测试类）；本机与 CI（ubuntu-latest + JDK 21）结果一致 |
+| 发布包 `:app:assembleRelease`（R8，已签名） | 由 CI 构建，2.39 MB，`apksigner verify` 通过 |
 | `apkanalyzer` 权限核对 | 不含 `INTERNET`；`minSdk 26` / `targetSdk 36` |
-
-> 已知限制：release 包在本机（内存紧张的 Windows 机器）跑 R8 时曾两次因 JVM 崩溃失败；
-> 调试包与测试始终正常。签名链路本身已用 AGP 的 `signingReport` 验证
-> （提供密钥时 `release → Config: release`，不提供时 `release → Config: none`），
-> 完整的签名 release 构建建议在 CI 或内存充足的机器上执行。
 
 ---
 
 ## 界面
 
-> **截图待补充**。我无法生成真机截图，所以这里不放占位图或设计稿冒充真实界面。
-> 需要哪些图、有什么要求、放进来之后怎么改这段，见 **[docs/images/README.md](docs/images/README.md)**。
->
-> 想要哪几张（首页 / 学习卡 / 学习建议 / 错题本 / 闭卷考试 / 统计与口径）以及命名，那里都列好了。
+| 首页 | 学习 |
+| --- | --- |
+| ![首页：今日进度、下一步、词汇状态](docs/images/home-dark.jpg) | ![学习卡：单词与朗读](docs/images/study-dark.jpg) |
+
+首页一屏回答四个问题：今日进度（环形 + 已学 / 正确率 / 时长）、**下一步该做什么**（带时间估算和一个按钮）、
+词汇状态分布、以及下一个阶段目标。学习卡默认隐藏释义，先回忆再点击查看。
 
 ---
 
