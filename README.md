@@ -1,5 +1,6 @@
 # 薄荷单词 · CetVocab
 
+[![CI](https://github.com/ChihoYiu/CetVocab/actions/workflows/ci.yml/badge.svg)](https://github.com/ChihoYiu/CetVocab/actions/workflows/ci.yml)
 ![platform](https://img.shields.io/badge/platform-Android-3DDC84?logo=android&logoColor=white)
 ![minSdk](https://img.shields.io/badge/minSdk-26-blue)
 ![Kotlin](https://img.shields.io/badge/Kotlin-2.4-7F52FF?logo=kotlin&logoColor=white)
@@ -18,38 +19,36 @@
 > 内置词库来自 **ECDICT（MIT 许可）**，为完整的四级 3,849 词 / 六级 5,407 词；你也可以导入自己拥有
 > 合法使用权的 JSON / CSV 词库。第三方内容的许可见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。
 
+**快速入口**：[使用指南](docs/USER_GUIDE.md) · [下载安装包](https://github.com/ChihoYiu/CetVocab/releases) ·
+[自己构建](#如何运行) · [贡献指南](CONTRIBUTING.md) · [发布签名](docs/RELEASE_SIGNING.md) · [行为准则](CODE_OF_CONDUCT.md)
+
 ### 验证状态
 
-本仓库**没有配置 CI**，因此不显示构建状态徽章（避免出现无法核实的“build passing”）。
+CI 徽章是**真实**的：每次推送到 `main` 或提 PR 都会在 GitHub Actions 上跑全部单元测试并构建调试包
+（见 [.github/workflows/ci.yml](.github/workflows/ci.yml)）。
+
 最近一次在本机（Windows + JDK 25 + Gradle 9.8.1）的完整验证结果：
 
 | 项目 | 结果 |
 | --- | --- |
 | 单元测试 `:app:testDebugUnitTest` | **370 个用例通过，0 失败 / 0 错误**（22 个测试类） |
 | 调试包 `:app:assembleDebug` | 成功，14.94 MB |
-| 发布包 `:app:assembleRelease`（R8） | 成功，2.36 MB（**未签名**） |
+| 发布包 `:app:assembleRelease`（R8） | 成功，2.36 MB（**未签名**，签名配置见 [发布签名](docs/RELEASE_SIGNING.md)） |
 | `apkanalyzer` 权限核对 | 不含 `INTERNET`；`minSdk 26` / `targetSdk 36` |
 
-如果你希望有真实的构建徽章，可以添加 GitHub Actions 工作流（需要 JDK + Android SDK 环境），
-我没有把它默认加进来，因为无法在本机验证 CI 环境的可用性。
+> 已知限制：release 包在本机（内存紧张的 Windows 机器）跑 R8 时曾两次因 JVM 崩溃失败；
+> 调试包与测试始终正常。签名链路本身已用 AGP 的 `signingReport` 验证
+> （提供密钥时 `release → Config: release`，不提供时 `release → Config: none`），
+> 完整的签名 release 构建建议在 CI 或内存充足的机器上执行。
 
 ---
 
 ## 界面
 
-> 截图待补充。这里预留了 6 张图的位置，建议按下表逐张放入 `docs/images/` 后替换本段：
+> **截图待补充**。我无法生成真机截图，所以这里不放占位图或设计稿冒充真实界面。
+> 需要哪些图、有什么要求、放进来之后怎么改这段，见 **[docs/images/README.md](docs/images/README.md)**。
 >
-> | 文件名 | 建议截图内容 |
-> | --- | --- |
-> | `docs/images/home.png` | 首页：今日进度 + 下一步 + 词汇状态 + 阶段目标 |
-> | `docs/images/study.png` | 学习卡：释义隐藏状态与朗读按钮 |
-> | `docs/images/insight.png` | 首页下方的学习建议与每日激励 |
-> | `docs/images/review.png` | 错题本 / 复习中心（含筛选） |
-> | `docs/images/exam.png` | 闭卷考试进行中 |
-> | `docs/images/stats.png` | 学习统计与统计口径说明 |
->
-> 放入图片后，把本段替换为：
-> `![首页](docs/images/home.png)` 这样的 Markdown 图片引用即可。
+> 想要哪几张（首页 / 学习卡 / 学习建议 / 错题本 / 闭卷考试 / 统计与口径）以及命名，那里都列好了。
 
 ---
 
@@ -79,8 +78,12 @@
 ### 1. 环境要求
 
 * Android Studio（含 Android SDK **API 36** 平台与 Build-Tools 36）
-* JDK 17 或更高（项目以 Java 17 字节码编译）
+* JDK 17 或更高（项目以 Java 17 字节码编译；CI 用 JDK 21）
 * Gradle 使用项目自带的 Wrapper（`./gradlew`），无需本机安装
+
+> ⚠️ **Windows 用户请注意**：仓库所在路径**不能包含中文等非 ASCII 字符**（例如放在桌面的「薄荷单词 · CetVocab」这种目录）。
+> Android Gradle 插件会直接报 `Your project path contains non-ASCII characters` 并终止构建。
+> 请把项目放在纯英文路径下，例如 `D:\code\CetVocab`。
 
 ### 2. 配置 SDK 路径
 
@@ -100,6 +103,7 @@ sdk.dir=/path/to/Android/Sdk
 ```
 
 调试安装包位于 `app/build/outputs/apk/debug/app-debug.apk`（`applicationId` 为 `com.cetvocab.app.debug`）。
+要出自带签名的正式包，请先按 [发布签名](docs/RELEASE_SIGNING.md) 配置密钥（**密钥不要提交**）。
 
 ### 4. 验证 Android 8.0 兼容性
 
@@ -143,15 +147,22 @@ app/src/main/java/com/cetvocab/app/
 
 ## 文档
 
-* [交付报告](docs/DELIVERY_REPORT.md) —— 功能清单、数据库表与迁移、算法规则、测试与兼容性结果、已知限制
-* [迭代报告 3（发音 / 进度 / 分析 / 激励）](docs/ITERATION_3_REPORT.md) —— 本轮改动文件、根因、测试结果与未解决事项
-* [产品优化方案](docs/PRODUCT_OPTIMIZATION_PLAN.md) —— 四个方向的问题分析、页面设计、指标口径、验收标准与风险
-* [迭代报告 2（稳定性 / 词库 / 状态栏）](docs/ITERATION_2_REPORT.md) —— 动画性能、内置词库完整性、状态栏反色的根因与实测数据
-* [词库校验报告](docs/WORD_PACK_VALIDATION.md) —— 内置词库的来源、许可证、完整性实测数字与音标转写说明
+**面向使用者**
+
+* [使用指南](docs/USER_GUIDE.md) —— 安装、五分钟上手、各页面怎么用、统计口径、朗读问题排查、数据与隐私
 * [词库导入格式说明](docs/WORD_PACK_FORMAT.md) —— JSON / CSV 字段定义、示例文件与版权注意事项
+
+**面向开发者**
+
+* [文档索引](docs/README.md) —— 全部文档的入口
+* [贡献指南](CONTRIBUTING.md) —— 构建、测试、代码约定与 PR 要求
+* [发布签名](docs/RELEASE_SIGNING.md) —— 生成密钥库、本机与 CI 出正式包（密钥绝不入库）
+* [行为准则](CODE_OF_CONDUCT.md)
+* [词库校验报告](docs/WORD_PACK_VALIDATION.md) —— 内置词库的来源、许可证、完整性实测数字与音标转写说明
 * [发音验证报告（历史）](docs/PRONUNCIATION_VERIFICATION.md) —— 已移除的真人录音模块的线上实测：美/英命中率、字节与许可证
 * [第三方内容与许可](THIRD-PARTY-NOTICES.md) —— 内置词库（ECDICT MIT）的版权声明与各候选数据源的采用记录
 * [词库构建与校验脚本](tools/wordpack/) —— 词库是如何从上游生成、转写与校验的（可复现）
+* 开发过程记录（根因分析、实测数据、方案依据）：[docs/dev/](docs/dev/)
 
 ## 许可证
 

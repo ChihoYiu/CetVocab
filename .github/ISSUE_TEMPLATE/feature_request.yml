@@ -1,0 +1,60 @@
+name: 功能建议
+description: 提出新功能或改进建议
+title: "[建议] "
+labels: [ "enhancement" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先说明**要解决的问题**，而不只是想要的功能——这样更容易找到更简单的实现方式。
+        另外请留意本项目的既有约束：离线优先、不申请 `INTERNET` 权限、不接入统计 SDK、
+        学习数据只存本机。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你想解决什么问题
+      placeholder: 例如：背完一组后不知道要不要再来一组，希望有个明确的收尾建议。
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 你希望的方案
+      placeholder: 描述你设想的交互或界面；如果有其他应用的做法可以参考，也可以贴出来。
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 你考虑过的替代方案
+      description: 例如用现有功能能不能凑合解决、为什么不行。
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 涉及的功能
+      options:
+        - 学习 / 复习
+        - 朗读（TTS）
+        - 错题本
+        - 闭卷考试
+        - 统计 / 分析 / 激励
+        - 首页展示
+        - 词库导入导出
+        - 主题 / 界面
+        - 其他
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: constraints
+    attributes:
+      label: 约束确认
+      options:
+        - label: 该建议不需要应用联网（或需要联网，我已在上面说明为什么必要）
+        - label: 该建议不依赖收集用户数据到远端

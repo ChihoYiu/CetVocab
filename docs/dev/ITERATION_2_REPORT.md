@@ -88,7 +88,7 @@
   冒充 IPA 的 ə、132 处用 **є (U+0454)** 冒充 ɛ，另有用 `'`/`:` 表示重音与长音。脚本
   `tools/wordpack/normalize_phonetics.py` 把它们机械地转写成 ə / ɛ / ˈ / ː（**只转写记号，不增删任何
   发音信息**），结果：9,219 条音标中不再含任何西里尔字符，且断言有回归测试守护。
-* 详细报告（含逐项测量表与残余风险）：[WORD_PACK_VALIDATION.md](WORD_PACK_VALIDATION.md)。
+* 详细报告（含逐项测量表与残余风险）：[WORD_PACK_VALIDATION.md](../WORD_PACK_VALIDATION.md)。
 
 ### 2.3 加载路径的两个真实缺陷（这才是「词库能不能用」的关键）
 
@@ -172,7 +172,7 @@
 
 ### 3.4 真实可用性验证（线上实测）
 
-见 [PRONUNCIATION_VERIFICATION.md](PRONUNCIATION_VERIFICATION.md) 与机器可读的
+见 [PRONUNCIATION_VERIFICATION.md](../PRONUNCIATION_VERIFICATION.md) 与机器可读的
 `tools/pronunciation/findings.json`：脚本对 14 个词（普通 3、长词 3、特殊拼写 8）**实际调用两个线上接口**，
 逐词记录美/英命中情况、解析出的 URL、文件字节数、许可证，并下载音频核对字节与 SHA-1。
 结果（**实测，不是估计**；数字取自最终一次运行 `2026-10-10T04:04Z`）：

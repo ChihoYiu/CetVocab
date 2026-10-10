@@ -169,7 +169,7 @@ app/src/main/java/com/cetvocab/app/
 1. **内置词库**：已替换为 **ECDICT（MIT）** 的完整 CET-4（3,849 词）与 CET-6（5,407 词）词表，
    双向差集为 0，即相对该来源是完整的。该来源没有例句、例句翻译、常见搭配与双口音音标，
    这些字段按「不编造数据」原则留空（界面会隐藏空区块）。如果你需要例句，可自行导入带这些字段的词库。
-   词库标准、许可证与校验细节见 [WORD_PACK_VALIDATION.md](WORD_PACK_VALIDATION.md)。
+   词库标准、许可证与校验细节见 [WORD_PACK_VALIDATION.md](../WORD_PACK_VALIDATION.md)。
 2. **无云端同步 / 账号系统**：按需求未接入账号、云服务、广告或统计 SDK；数据仅存本机，只能通过导出 / 恢复迁移。
 3. **朗读依赖系统 TTS（迭代 3 起）**：朗读使用设备自带的文字转语音服务，语言/声音/语速/音调跟随系统设置。
    设备未安装引擎或缺少英语语音包时会给出提示并提供系统设置入口（不崩溃、不静默失败）。
@@ -203,7 +203,7 @@ app/src/main/java/com/cetvocab/app/
 
 ## 9. 如何运行
 
-见 [README.md](../README.md)。最简路径：
+见 [README.md](../../README.md)。最简路径：
 
 ```bash
 # local.properties 中配置 sdk.dir 指向 Android SDK（API 36 平台 + Build-Tools 36）

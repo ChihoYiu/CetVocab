@@ -1,0 +1,90 @@
+name: Bug 反馈
+description: 报告一个可以复现的问题（崩溃、显示错误、朗读异常等）
+title: "[Bug] "
+labels: [ "bug" ]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！请尽量把信息填完整——尤其是**机型 / Android 版本 / 复现步骤**，
+        否则很多问题无法定位。提交前请先搜索是否已有同类 Issue。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么
+      description: 实际看到的现象。有截图更好（可以直接拖进来）。
+      placeholder: 例如：点朗读按钮后一直转圈，约 3 秒后出现「系统语音服务没有响应」。
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 你期望发生什么
+      placeholder: 例如：应该读出这个单词。
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. 打开首页
+        2. 进入学习
+        3. 点击朗读按钮
+        4. ……
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: 应用版本
+      description: 「我的 → 关于」里可以看到，或从 Release 名称/文件名得知。
+      placeholder: 例如：1.0.0 (debug)
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: 机型与 Android 版本
+      placeholder: 例如：Xiaomi 14 / Android 15（HyperOS 2）
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 涉及的功能
+      options:
+        - 学习 / 复习
+        - 朗读（TTS）
+        - 错题本
+        - 闭卷考试
+        - 统计 / 分析 / 激励
+        - 首页展示
+        - 词库导入导出
+        - 主题 / 界面
+        - 其他
+    validations:
+      required: true
+
+  - type: input
+    id: tts-engine
+    attributes:
+      label: 朗读问题专用：系统语音引擎
+      description: 仅在朗读相关问题时填写。「我的 → 朗读」页可以看到引擎名与本机朗读成功率。
+      placeholder: 例如：com.google.android.tts，成功率 60%（失败 4 次）
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: 其他补充
+      description: 例如是否只在特定主题/字体大小下出现、是否清空过数据、是否有报错日志。
+    validations:
+      required: false

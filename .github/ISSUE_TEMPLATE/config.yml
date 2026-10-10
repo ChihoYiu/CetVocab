@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 使用问题 / 怎么用
+    url: https://github.com/ChihoYiu/CetVocab/blob/main/docs/USER_GUIDE.md
+    about: 先看使用指南：安装、上手、统计口径、朗读问题排查、数据备份都在这里
+  - name: 朗读（TTS）没声音 / 报错
+    url: https://github.com/ChihoYiu/CetVocab/blob/main/docs/USER_GUIDE.md#5-朗读tts问题排查
+    about: 朗读依赖系统语音引擎，常见原因是没装语音引擎或缺少英语语音包，先按这里的表格排查
+  - name: 想自己构建 / 出正式包
+    url: https://github.com/ChihoYiu/CetVocab/blob/main/docs/RELEASE_SIGNING.md
+    about: 构建步骤与签名说明（Windows 注意：路径不能含中文）

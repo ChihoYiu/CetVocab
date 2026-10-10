@@ -21,3 +21,9 @@ __pycache__/
 # Kotlin/Gradle local caches and compiler logs (machine specific, never source)
 .kotlin/
 .kotlin/errors/
+# 发布签名材料：绝不能提交（见 docs/RELEASE_SIGNING.md）
+keystore.properties
+*.jks
+*.keystore
+*.p12
+*.pfx
