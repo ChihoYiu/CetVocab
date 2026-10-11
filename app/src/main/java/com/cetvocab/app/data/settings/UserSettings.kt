@@ -36,6 +36,15 @@ data class UserSettings(
     val animationsEnabled: Boolean = true,
     /** Auto-play the word when a new card appears. */
     val autoPlayPronunciation: Boolean = false,
+    /**
+     * Shuffle the study queue ("乱序").
+     *
+     * Applied **once to the whole queue** when a session starts — never per card: a per-card
+     * random could show the same word twice and never reach the end of the list. The session
+     * persists the resulting order, so resuming continues in the same order instead of
+     * re-shuffling on every resume.
+     */
+    val shuffleWords: Boolean = false,
     /** Read the example sentence too when the card is revealed. */
     val readExampleSentences: Boolean = false,
     /** How fast to read; SYSTEM means "use the operating system's setting". */

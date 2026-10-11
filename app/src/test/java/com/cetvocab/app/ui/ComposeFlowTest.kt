@@ -35,6 +35,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.AfterClass
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -375,6 +376,25 @@ class ComposeFlowTest {
         awaitCondition { readSettings().themeMode == ThemeMode.DARK }
 
         assertEquals(ThemeMode.DARK, readSettings().themeMode)
+    }
+
+    @Test
+    fun `the shuffle switch persists and can be turned back off`() {
+        composeRule.setContent {
+            CetVocabTheme { SettingsScreen(container = container, onBack = {}) }
+        }
+        // Off by default: the documented priority order is what a learner starts with.
+        awaitTag("settings_shuffle_switch")
+        assertFalse(readSettings().shuffleWords)
+
+        composeRule.onNodeWithTag("settings_shuffle_switch").performScrollTo().performClick()
+        awaitCondition { readSettings().shuffleWords }
+        assertTrue(readSettings().shuffleWords)
+
+        // Toggling back must restore the fixed order, not leave the setting stuck on.
+        composeRule.onNodeWithTag("settings_shuffle_switch").performScrollTo().performClick()
+        awaitCondition { !readSettings().shuffleWords }
+        assertFalse(readSettings().shuffleWords)
     }
 
     @Test

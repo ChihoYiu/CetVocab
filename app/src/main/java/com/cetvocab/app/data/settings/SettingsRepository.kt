@@ -41,6 +41,9 @@ interface SettingsRepository {
     suspend fun setAnimationsEnabled(enabled: Boolean)
     suspend fun setAutoPlayPronunciation(enabled: Boolean)
 
+    /** Whether the study queue is shuffled ("乱序") when a session starts. */
+    suspend fun setShuffleWords(enabled: Boolean)
+
     /** Whether the example sentence is read aloud as well as the word. */
     suspend fun setReadExampleSentences(enabled: Boolean)
 
@@ -112,6 +115,10 @@ class DataStoreSettingsRepository(private val context: Context) : SettingsReposi
         context.settingsDataStore.edit { it[Keys.AUTO_PLAY] = enabled }
     }
 
+    override suspend fun setShuffleWords(enabled: Boolean) {
+        context.settingsDataStore.edit { it[Keys.SHUFFLE_WORDS] = enabled }
+    }
+
     override suspend fun setReadExampleSentences(enabled: Boolean) {
         context.settingsDataStore.edit { it[Keys.READ_EXAMPLES] = enabled }
     }
@@ -169,6 +176,7 @@ class DataStoreSettingsRepository(private val context: Context) : SettingsReposi
             dynamicColor = this[Keys.DYNAMIC_COLOR] ?: defaults.dynamicColor,
             animationsEnabled = this[Keys.ANIMATIONS] ?: defaults.animationsEnabled,
             autoPlayPronunciation = this[Keys.AUTO_PLAY] ?: defaults.autoPlayPronunciation,
+            shuffleWords = this[Keys.SHUFFLE_WORDS] ?: defaults.shuffleWords,
             readExampleSentences = this[Keys.READ_EXAMPLES] ?: defaults.readExampleSentences,
             speechRateMode = SpeechRateMode.fromId(
                 this[Keys.SPEECH_RATE_MODE] ?: defaults.speechRateMode.id,
@@ -202,6 +210,7 @@ class DataStoreSettingsRepository(private val context: Context) : SettingsReposi
         val DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
         val ANIMATIONS = booleanPreferencesKey("animations_enabled")
         val AUTO_PLAY = booleanPreferencesKey("auto_play_pronunciation")
+        val SHUFFLE_WORDS = booleanPreferencesKey("shuffle_words")
         val READ_EXAMPLES = booleanPreferencesKey("read_example_sentences")
         val SPEECH_RATE_MODE = stringPreferencesKey("speech_rate_mode")
         val LAST_MOTIVATION_DAY = stringPreferencesKey("last_motivation_day")

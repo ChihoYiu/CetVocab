@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,7 +30,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -56,9 +56,11 @@ import com.cetvocab.app.ui.ViewModelFactories
 import com.cetvocab.app.ui.components.AppCard
 import com.cetvocab.app.ui.components.ConfirmDialog
 import com.cetvocab.app.ui.components.EmptyState
+import com.cetvocab.app.ui.components.EqualHeightTileRow
 import com.cetvocab.app.ui.components.FilterChipGroup
 import com.cetvocab.app.ui.components.SecondaryButton
 import com.cetvocab.app.ui.components.SectionHeader
+import com.cetvocab.app.ui.components.SettingToggleRow
 import com.cetvocab.app.ui.components.StatCard
 import com.cetvocab.app.ui.theme.AppTheme
 import com.cetvocab.app.ui.theme.CetVocabTheme
@@ -122,17 +124,24 @@ fun ProfileScreen(
             }
 
             item {
-                Row(horizontalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                // EqualHeightTileRow (instead of a bare Row) because only the second tile has a
+                // caption: without it the two 色块 come out at different heights and the row looks
+                // misaligned. `fillMaxHeight()` makes whichever tile is shorter match the taller one.
+                EqualHeightTileRow {
                     StatCard(
                         label = "连续学习",
                         value = "${state.stats?.streakDays ?: 0} 天",
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
                     )
                     StatCard(
                         label = "已学习",
                         value = "${state.stats?.totalLearnedWords ?: 0}",
                         caption = "共 ${state.wordCount} 个",
-                        modifier = Modifier.weight(1f),
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight(),
                     )
                 }
             }
@@ -152,7 +161,7 @@ fun ProfileScreen(
 
             item {
                 AppCard {
-                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
                         SectionHeader(title = "词库列表")
                         if (state.packs.isEmpty()) {
                             Text(
@@ -162,12 +171,19 @@ fun ProfileScreen(
                             )
                         } else {
                             state.packs.forEach { pack ->
-                                Column {
+                                // No trailing spacer: the gap between rows comes from `spacedBy`, so
+                                // the last row is not followed by a stray gap before the card padding.
+                                Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                        horizontalArrangement = Arrangement.spacedBy(Spacing.sm),
+                                        verticalAlignment = Alignment.CenterVertically,
                                     ) {
-                                        Text(pack.name, style = MaterialTheme.typography.titleSmall)
+                                        Text(
+                                            text = pack.name,
+                                            style = MaterialTheme.typography.titleSmall,
+                                            modifier = Modifier.weight(1f),
+                                        )
                                         Text(
                                             text = if (pack.isBuiltIn) "内置" else "已导入",
                                             style = MaterialTheme.typography.labelMedium,
@@ -179,7 +195,6 @@ fun ProfileScreen(
                                         style = MaterialTheme.typography.bodySmall,
                                         color = AppTheme.colors.mutedText,
                                     )
-                                    Spacer(Modifier.height(Spacing.sm))
                                 }
                             }
                         }
@@ -189,7 +204,7 @@ fun ProfileScreen(
 
             item {
                 AppCard {
-                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                    Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
                         SectionHeader(title = "最近导入记录")
                         if (state.importHistory.isEmpty()) {
                             Text(
@@ -199,7 +214,7 @@ fun ProfileScreen(
                             )
                         } else {
                             state.importHistory.take(5).forEach { record ->
-                                Column {
+                                Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
                                     Text(
                                         text = "${record.fileName}（${record.format}）",
                                         style = MaterialTheme.typography.bodyMedium,
@@ -217,7 +232,6 @@ fun ProfileScreen(
                                             MaterialTheme.colorScheme.error
                                         },
                                     )
-                                    Spacer(Modifier.height(Spacing.sm))
                                 }
                             }
                         }
@@ -236,7 +250,9 @@ private fun SettingsEntry(
     testTag: String? = null,
 ) {
     AppCard(onClick = onClick, modifier = if (testTag != null) Modifier.testTag(testTag) else Modifier) {
-        Column {
+        // `spacedBy` instead of two flush Texts: the title/subtitle gap is then identical to every
+        // other two-line block in the app (which all use Spacing.xs).
+        Column(verticalArrangement = Arrangement.spacedBy(Spacing.xs)) {
             Text(title, style = MaterialTheme.typography.titleMedium)
             Text(
                 text = subtitle,
@@ -326,29 +342,38 @@ fun SettingsScreen(
 
             AppCard {
                 Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
+                    SectionHeader(title = "学习顺序")
+                    SettingToggleRow(
+                        label = "乱序刷单词",
+                        description = "开启后，每次开始学习时会把整个队列随机打乱（到期词、"
+                            + "未巩固词与新词混在一起）；关闭时按「先复习到期词、再由难到易、最后新词」"
+                            + "的固定顺序。进行中的学习不会被中途打乱。",
+                        checked = settings.shuffleWords,
+                        onCheckedChange = viewModel::setShuffleWords,
+                        testTag = "settings_shuffle_switch",
+                    )
+                }
+            }
+
+            AppCard {
+                Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
                     SectionHeader(title = "学习提醒")
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text("开启每日提醒", style = MaterialTheme.typography.bodyLarge)
-                        Switch(
-                            checked = settings.reminderEnabled,
-                            onCheckedChange = { enabled ->
-                                viewModel.setReminder(enabled, settings.reminderHour, settings.reminderMinute)
-                                infoMessage = if (enabled) {
-                                    "已开启提醒。"
-                                } else {
-                                    "已关闭提醒。"
-                                }
-                                if (enabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                                    notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-                                }
-                            },
-                            modifier = Modifier.testTag("settings_reminder_switch"),
-                        )
-                    }
+                    SettingToggleRow(
+                        label = "开启每日提醒",
+                        checked = settings.reminderEnabled,
+                        onCheckedChange = { enabled ->
+                            viewModel.setReminder(enabled, settings.reminderHour, settings.reminderMinute)
+                            infoMessage = if (enabled) {
+                                "已开启提醒。"
+                            } else {
+                                "已关闭提醒。"
+                            }
+                            if (enabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+                            }
+                        },
+                        testTag = "settings_reminder_switch",
+                    )
                     if (settings.reminderEnabled) {
                         FilterChipGroup(
                             options = REMINDER_PRESETS,
@@ -413,30 +438,18 @@ fun SettingsScreen(
                         style = MaterialTheme.typography.bodySmall,
                         color = AppTheme.colors.mutedText,
                     )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text("卡片出现时自动朗读", style = MaterialTheme.typography.bodyLarge)
-                        Switch(
-                            checked = settings.autoPlayPronunciation,
-                            onCheckedChange = viewModel::setAutoPlayPronunciation,
-                            modifier = Modifier.testTag("settings_autoplay_switch"),
-                        )
-                    }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text("同时朗读例句", style = MaterialTheme.typography.bodyLarge)
-                        Switch(
-                            checked = settings.readExampleSentences,
-                            onCheckedChange = viewModel::setReadExampleSentences,
-                            modifier = Modifier.testTag("settings_read_examples_switch"),
-                        )
-                    }
+                    SettingToggleRow(
+                        label = "卡片出现时自动朗读",
+                        checked = settings.autoPlayPronunciation,
+                        onCheckedChange = viewModel::setAutoPlayPronunciation,
+                        testTag = "settings_autoplay_switch",
+                    )
+                    SettingToggleRow(
+                        label = "同时朗读例句",
+                        checked = settings.readExampleSentences,
+                        onCheckedChange = viewModel::setReadExampleSentences,
+                        testTag = "settings_read_examples_switch",
+                    )
                     Text(
                         text = "朗读使用系统自带的文字转语音服务：单词与例句用英语，" +
                             "「朗读释义」用中文。应用不联网、不下载音频，也不需要额外的权限。" +
@@ -458,25 +471,13 @@ fun SettingsScreen(
                         modifier = Modifier.testTag("settings_theme"),
                     )
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically,
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text("动态颜色", style = MaterialTheme.typography.bodyLarge)
-                                Text(
-                                    text = "使用系统壁纸配色（Android 12+），关闭后使用薄荷绿品牌色。",
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = AppTheme.colors.mutedText,
-                                )
-                            }
-                            Switch(
-                                checked = settings.dynamicColor,
-                                onCheckedChange = viewModel::setDynamicColor,
-                                modifier = Modifier.testTag("settings_dynamic_color_switch"),
-                            )
-                        }
+                        SettingToggleRow(
+                            label = "动态颜色",
+                            description = "使用系统壁纸配色（Android 12+），关闭后使用薄荷绿品牌色。",
+                            checked = settings.dynamicColor,
+                            onCheckedChange = viewModel::setDynamicColor,
+                            testTag = "settings_dynamic_color_switch",
+                        )
                     } else {
                         Text(
                             text = "动态颜色需要 Android 12 及以上，本机使用薄荷绿品牌配色。",
@@ -484,30 +485,18 @@ fun SettingsScreen(
                             color = AppTheme.colors.mutedText,
                         )
                     }
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text("动画效果", style = MaterialTheme.typography.bodyLarge)
-                            Text(
-                                text = "关闭后所有过渡立即完成，也会尊重系统的「移除动画」设置。",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = AppTheme.colors.mutedText,
-                            )
-                        }
-                        Switch(
-                            checked = settings.animationsEnabled,
-                            onCheckedChange = viewModel::setAnimationsEnabled,
-                            modifier = Modifier.testTag("settings_animations_switch"),
-                        )
-                    }
+                    SettingToggleRow(
+                        label = "动画效果",
+                        description = "关闭后所有过渡立即完成，也会尊重系统的「移除动画」设置。",
+                        checked = settings.animationsEnabled,
+                        onCheckedChange = viewModel::setAnimationsEnabled,
+                        testTag = "settings_animations_switch",
+                    )
                 }
             }
 
             AppCard {
-                Column(verticalArrangement = Arrangement.spacedBy(Spacing.sm)) {
+                Column(verticalArrangement = Arrangement.spacedBy(Spacing.md)) {
                     SectionHeader(title = "数据管理")
                     SecondaryButton(
                         text = "恢复默认设置",

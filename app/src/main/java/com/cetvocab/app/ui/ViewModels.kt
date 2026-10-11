@@ -534,7 +534,8 @@ class StudyViewModel(private val container: AppContainer) : ViewModel() {
                     }
                     container.studyRepository.buildQueue(settings)
                 } else {
-                    container.studyRepository.buildDrillQueue(drillIds)
+                    // The same "乱序" preference applies to mistake drills the learner started.
+                    container.studyRepository.buildDrillQueue(drillIds, shuffle = settings.shuffleWords)
                 }
                 if (items.isEmpty()) {
                     _state.update {
@@ -1295,6 +1296,9 @@ class ProfileViewModel(private val container: AppContainer) : ViewModel() {
     }
 
     fun setReadExampleSentences(enabled: Boolean) = launchSettings { setReadExampleSentences(enabled) }
+
+    /** "乱序"：直接写回设置，下一次开始学习时生效（进行中的会话保持原顺序，不会被中途打乱）。 */
+    fun setShuffleWords(enabled: Boolean) = launchSettings { setShuffleWords(enabled) }
 
     fun setSpeechRateMode(mode: SpeechRateMode) = launchSettings { setSpeechRateMode(mode) }
 

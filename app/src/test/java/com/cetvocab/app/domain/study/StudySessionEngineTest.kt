@@ -1,5 +1,6 @@
 package com.cetvocab.app.domain.study
 
+import kotlin.random.Random
 import com.cetvocab.app.domain.srs.ReviewGrade
 import com.cetvocab.app.domain.srs.SrsConstants
 import com.google.common.truth.Truth.assertThat
@@ -387,5 +388,90 @@ class StudySessionEngineTest {
             StudyQueueItem(4L, QueueReason.MISTAKE),
         ).inOrder()
         assertThat(StudyQueueBuilder.drillQueue(emptyList())).isEmpty()
+    }
+
+    // --- 乱序 (shuffle) --------------------------------------------------------------------
+
+    @Test
+    fun `shuffle off keeps the documented priority order`() {
+        val queue = StudyQueueBuilder.build(
+            dueWordIds = listOf(1L, 2L),
+            fragileWordIds = listOf(3L),
+            newWordIds = listOf(4L),
+            dailyNewWordGoal = 5,
+            dailyReviewLimit = 5,
+            shuffle = false,
+        )
+
+        assertThat(queue.map { it.wordId }).containsExactly(1L, 2L, 3L, 4L).inOrder()
+    }
+
+    @Test
+    fun `shuffle reorders the whole queue but never loses or duplicates a word`() {
+        // The requirement is explicit: shuffle applies to the *entire* list, not one word at a time.
+        // So the invariant is "same words, same reasons, different order", checked on a list large
+        // enough that a permutation equal to the input is not a realistic outcome.
+        val due = (1L..20L).toList()
+        val fragile = (21L..25L).toList()
+        val newWords = (26L..30L).toList()
+
+        val ordered = StudyQueueBuilder.build(due, fragile, newWords, 10, 30, shuffle = false)
+        val shuffled = StudyQueueBuilder.build(due, fragile, newWords, 10, 30, shuffle = true, random = Random(7))
+
+        assertThat(shuffled).hasSize(ordered.size)
+        assertThat(shuffled.map { it.wordId }).containsExactlyElementsIn(ordered.map { it.wordId })
+        assertThat(shuffled.map { it.wordId }.distinct()).hasSize(shuffled.size)
+        // Reasons travel with their word, so the card badge stays correct after shuffling.
+        ordered.forEach { item ->
+            assertThat(shuffled.first { it.wordId == item.wordId }.reason).isEqualTo(item.reason)
+        }
+        assertThat(shuffled.map { it.wordId }).isNotEqualTo(ordered.map { it.wordId })
+    }
+
+    @Test
+    fun `shuffle permutes the combined list with the given random source`() {
+        // The requirement is "randomise the whole list, not one word at a time". The deterministic
+        // way to pin that down: the result must equal *the unshuffled queue, shuffled once* with the
+        // same source. If the implementation ever shuffled each priority group separately, the two
+        // orders would differ for the same seed and this test would fail.
+        // (An earlier version of this test sampled 30 seeds hoping to see a new word drawn first —
+        // with 41 cards that is only ~52% likely, i.e. a flaky test. This form is exact.)
+        val due = (1L..20L).toList()
+        val fragile = (21L..25L).toList()
+        val newWords = (26L..30L).toList()
+
+        val combined = StudyQueueBuilder.build(due, fragile, newWords, 10, 30, shuffle = false)
+        val expected = combined.shuffled(Random(7))
+        val actual = StudyQueueBuilder.build(due, fragile, newWords, 10, 30, shuffle = true, random = Random(7))
+
+        assertThat(actual).isEqualTo(expected)
+        // ... and the unshuffled path is unaffected by the new parameter.
+        assertThat(combined.map { it.wordId }).isEqualTo(due + fragile + newWords)
+    }
+
+    @Test
+    fun `the same seed produces the same permutation so a session can be reproduced`() {
+        val first = StudyQueueBuilder.build((1L..30L).toList(), emptyList(), emptyList(), 0, 30, shuffle = true, random = Random(42))
+        val second = StudyQueueBuilder.build((1L..30L).toList(), emptyList(), emptyList(), 0, 30, shuffle = true, random = Random(42))
+
+        assertThat(first.map { it.wordId }).isEqualTo(second.map { it.wordId })
+    }
+
+    @Test
+    fun `shuffling a drill queue keeps every selected word`() {
+        val selected = (1L..12L).toList()
+
+        val drill = StudyQueueBuilder.drillQueue(selected, shuffle = true, random = Random(3))
+
+        assertThat(drill.map { it.wordId }).containsExactlyElementsIn(selected)
+        assertThat(drill.all { it.reason == QueueReason.MISTAKE }).isTrue()
+    }
+
+    @Test
+    fun `shuffling an empty queue stays empty`() {
+        assertThat(
+            StudyQueueBuilder.build(emptyList(), emptyList(), emptyList(), 10, 10, shuffle = true, random = Random(1)),
+        ).isEmpty()
+        assertThat(StudyQueueBuilder.drillQueue(emptyList(), shuffle = true, random = Random(1))).isEmpty()
     }
 }

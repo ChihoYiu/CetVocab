@@ -49,7 +49,7 @@ interface StudyRepository {
     suspend fun buildQueue(settings: UserSettings): List<StudyQueueItem>
 
     /** Queue for a targeted drill (mistake book / review centre "重新练习"). */
-    fun buildDrillQueue(wordIds: List<Long>): List<StudyQueueItem>
+    fun buildDrillQueue(wordIds: List<Long>, shuffle: Boolean = false): List<StudyQueueItem>
 
     /** The unfinished session, if any, rebuilt from the database. */
     suspend fun resumeActiveSession(): StudySessionState?
@@ -131,11 +131,13 @@ class DefaultStudyRepository(
             newWordIds = newWords,
             dailyNewWordGoal = settings.dailyNewWordGoal,
             dailyReviewLimit = settings.dailyReviewLimit,
+            // "乱序" preference: shuffle the whole queue once, when the session starts.
+            shuffle = settings.shuffleWords,
         )
     }
 
-    override fun buildDrillQueue(wordIds: List<Long>): List<StudyQueueItem> =
-        StudyQueueBuilder.drillQueue(wordIds)
+    override fun buildDrillQueue(wordIds: List<Long>, shuffle: Boolean): List<StudyQueueItem> =
+        StudyQueueBuilder.drillQueue(wordIds, shuffle = shuffle)
 
     override suspend fun resumeActiveSession(): StudySessionState? {
         val entity = db.studySessionDao().active() ?: return null

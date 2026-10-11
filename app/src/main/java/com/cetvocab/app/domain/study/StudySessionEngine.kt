@@ -2,6 +2,7 @@ package com.cetvocab.app.domain.study
 
 import com.cetvocab.app.domain.srs.ReviewGrade
 import com.cetvocab.app.domain.srs.SrsConstants
+import kotlin.random.Random
 
 /** Why a word is in today's queue. Shown to the learner so the plan is never a black box. */
 enum class QueueReason(val label: String) {
@@ -37,6 +38,14 @@ data class StudyQueueItem(
  *
  * Due and fragile words are never dropped in favour of new words — a learner who is behind
  * on reviews should not be pushed further ahead.
+ *
+ * **Shuffle** ("乱序" in settings) is applied to the **finished list as a whole**, exactly once,
+ * not per card: the learner gets one random permutation for the session, and because the session
+ * persists the resulting order, resuming continues in the same order instead of re-shuffling
+ * (a per-card random would also be wrong: it could hand out the same word twice and never reach
+ * the end of the list). When shuffling, the priority order above is intentionally relaxed — that
+ * is the point of the setting — but each card still shows its own [QueueReason] badge, so a new
+ * word is still labelled as new.
  */
 object StudyQueueBuilder {
 
@@ -46,6 +55,8 @@ object StudyQueueBuilder {
         newWordIds: List<Long>,
         dailyNewWordGoal: Int,
         dailyReviewLimit: Int,
+        shuffle: Boolean = false,
+        random: Random = Random.Default,
     ): List<StudyQueueItem> {
         val reviewQuota = dailyReviewLimit.coerceAtLeast(0)
         val due = dueWordIds.distinct().take(reviewQuota).map { StudyQueueItem(it, QueueReason.DUE) }
@@ -60,12 +71,26 @@ object StudyQueueBuilder {
             .filter { id -> due.none { it.wordId == id } && fragile.none { it.wordId == id } }
             .take(dailyNewWordGoal.coerceAtLeast(0))
             .map { StudyQueueItem(it, QueueReason.NEW) }
-        return due + fragile + news
+        val ordered = due + fragile + news
+        // `shuffled` returns a permutation of the whole list: same elements, same reasons,
+        // different order. `random` is injected so tests can pin the permutation.
+        return if (shuffle) ordered.shuffled(random) else ordered
     }
 
-    /** Queue for "重新练习" from the mistake book / review centre. */
-    fun drillQueue(wordIds: List<Long>): List<StudyQueueItem> =
-        wordIds.distinct().map { StudyQueueItem(it, QueueReason.MISTAKE) }
+    /**
+     * Queue for "重新练习" from the mistake book / review centre.
+     *
+     * The learner picked these words explicitly, so the selection order is kept by default; the
+     * shuffle option applies here too when it is switched on.
+     */
+    fun drillQueue(
+        wordIds: List<Long>,
+        shuffle: Boolean = false,
+        random: Random = Random.Default,
+    ): List<StudyQueueItem> {
+        val ordered = wordIds.distinct().map { StudyQueueItem(it, QueueReason.MISTAKE) }
+        return if (shuffle) ordered.shuffled(random) else ordered
+    }
 }
 
 /**
