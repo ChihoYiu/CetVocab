@@ -30,7 +30,7 @@ CI 徽章是**真实**的：每次推送到 `main` 或提 PR 都会在 GitHub Ac
 
 | 项目 | 结果 |
 | --- | --- |
-| 单元测试 `:app:testDebugUnitTest` | **370 个用例通过，0 失败 / 0 错误**（22 个测试类）；本机与 CI（ubuntu-latest + JDK 21）结果一致 |
+| 单元测试 `:app:testDebugUnitTest` | **377 个用例通过，0 失败 / 0 错误**（22 个测试类）；本机与 CI（ubuntu-latest + JDK 21）结果一致 |
 | 发布包 `:app:assembleRelease`（R8，已签名） | 由 CI 构建，2.39 MB，`apksigner verify` 通过 |
 | `apkanalyzer` 权限核对 | 不含 `INTERNET`；`minSdk 26` / `targetSdk 36` |
 

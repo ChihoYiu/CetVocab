@@ -69,9 +69,9 @@ android {
         applicationId = "com.cetvocab.app"
         minSdk = 26
         targetSdk = 36
-        // 1.0.1 是首个使用正式签名密钥发布的版本；1.0.0 是调试签名的预览包。
-        versionCode = 2
-        versionName = "1.0.1"
+        // 1.0.2：新增「乱序刷单词」设置，并修复设置页色块对齐；1.0.1 是首个正式签名版本。
+        versionCode = 3
+        versionName = "1.0.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
     }
