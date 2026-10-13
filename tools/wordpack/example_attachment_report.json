@@ -1,0 +1,669 @@
+{
+  "packVersion": 3,
+  "usableSentences": 46460,
+  "vocabularySize": 10023,
+  "levels": {
+    "CET4": {
+      "words": 3849,
+      "withExample": 3230,
+      "withoutExample": 619,
+      "coveragePercent": 83.92,
+      "translationConvertedFromTraditional": 537,
+      "matchedThroughInflection": 269,
+      "qualityTierHistogram": {
+        "0": 2470,
+        "1": 176,
+        "2": 492,
+        "3": 88,
+        "4": 4
+      }
+    },
+    "CET6": {
+      "words": 5407,
+      "withExample": 3695,
+      "withoutExample": 1712,
+      "coveragePercent": 68.34,
+      "translationConvertedFromTraditional": 779,
+      "matchedThroughInflection": 401,
+      "qualityTierHistogram": {
+        "0": 2591,
+        "1": 245,
+        "2": 703,
+        "3": 147,
+        "4": 9
+      }
+    }
+  },
+  "samples": [
+    {
+      "level": "CET4",
+      "word": "action",
+      "english": "He is regretting his action.",
+      "chinese": "他对他的行为感到后悔。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "afterward",
+      "english": "Ivan was fired afterwards.",
+      "chinese": "伊凡后来被开除了。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "anticipate",
+      "english": "I anticipate that there will be trouble.",
+      "chinese": "我预料会有麻烦。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "arrangement",
+      "english": "Flower arrangement is a part of Japanese culture.",
+      "chinese": "花道是日本文化的一部分。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "attraction",
+      "english": "The coral reef is the region's prime attraction.",
+      "chinese": "珊瑚礁是这个地区的主要景点。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "bargain",
+      "english": "This dress is a good bargain.",
+      "chinese": "这条连衣裙很便宜。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "benefit",
+      "english": "Doing things in this way has no benefit.",
+      "chinese": "这么做没什么好处。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "bough",
+      "english": "The boughs that bear most hang lowest.",
+      "chinese": "稻穗越饱满越低头。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "bureau",
+      "english": "The meteorological bureau has issued a red rainstorm alert.",
+      "chinese": "气象局发布了暴雨红色预警。",
+      "tier": 3
+    },
+    {
+      "level": "CET4",
+      "word": "capture",
+      "english": "We were never able to capture him.",
+      "chinese": "我们一直抓不住他。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "chapter",
+      "english": "You can omit the last chapter of the book.",
+      "chinese": "你可以删去书里面的最后一章。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "civil",
+      "english": "America's Civil War lasted four years.",
+      "chinese": "南北战争持续了四年。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "colonel",
+      "english": "He advanced to colonel.",
+      "chinese": "他晋升为大佐。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "component",
+      "english": "The clan system is a key component of traditional Chinese culture.",
+      "chinese": "宗族制度是中国传统文化的重要组成部分。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "consider",
+      "english": "They consider themselves fortunate.",
+      "chinese": "他们认为自己是幸运的。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "cord",
+      "english": "He caught the cord.",
+      "chinese": "他抓住了绳子。",
+      "tier": 1
+    },
+    {
+      "level": "CET4",
+      "word": "crop",
+      "english": "It can also kill crops.",
+      "chinese": "它也会杀死庄稼。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "deceive",
+      "english": "Don't let appearances deceive you.",
+      "chinese": "不要被外貌蒙蔽了。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "depress",
+      "english": "I feel depressed often.",
+      "chinese": "我经常觉得沮丧。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "dim",
+      "english": "I have a dim memory of my grandmother.",
+      "chinese": "我对祖母的记忆很模糊。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "disturb",
+      "english": "Don't disturb me while I'm studying.",
+      "chinese": "我学习的时候不要打扰我。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "duty",
+      "english": "I am on duty now.",
+      "chinese": "我正在值班。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "elevator",
+      "english": "The elevator seems to be out of order.",
+      "chinese": "电梯好像故障了。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "entry",
+      "english": "Entry of pool is prohibited.",
+      "chinese": "禁止入池。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "excite",
+      "english": "He was somewhat excited.",
+      "chinese": "他有点兴奋了。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "extremely",
+      "english": "I am extremely tired.",
+      "chinese": "困死了。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "feeling",
+      "english": "I'm not feeling well.",
+      "chinese": "我身体不适。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "folk",
+      "english": "We have to sing at an old folks home today.",
+      "chinese": "我们今天得去养老院唱歌。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "frog",
+      "english": "The frog in the well.",
+      "chinese": "井底之蛙。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "German",
+      "english": "I don't understand German.",
+      "chinese": "我不懂德语。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "grape",
+      "english": "I like grape jelly best.",
+      "chinese": "我最喜欢吃葡萄果冻。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "happiness",
+      "english": "Money can't buy happiness.",
+      "chinese": "钱买不到幸福。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "hire",
+      "english": "I would like to hire a car.",
+      "chinese": "我想租一辆车。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "idle",
+      "english": "I spent idle days during the vacation.",
+      "chinese": "假期里，我度过了悠闲的日子。",
+      "tier": 1
+    },
+    {
+      "level": "CET4",
+      "word": "Indian",
+      "english": "Taiwanese food is milder than Indian food.",
+      "chinese": "台湾菜比印度菜口味淡。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "instinct",
+      "english": "Most animals have an instinct to protect their young.",
+      "chinese": "大多数动物都有保护幼仔的本能。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "invisible",
+      "english": "Magnetic fields are invisible.",
+      "chinese": "磁场是看不见的。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "kill",
+      "english": "Please kill the lights.",
+      "chinese": "请关灯。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "lay",
+      "english": "Lay down all arms.",
+      "chinese": "放下所有武器。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "limitation",
+      "english": "I know my limitations.",
+      "chinese": "我知道我的限度。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "luxury",
+      "english": "Travelling is a luxury I can't afford.",
+      "chinese": "旅游对我来说是付不起的奢侈。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "mayor",
+      "english": "He was elected mayor.",
+      "chinese": "他被选为市长。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "miracle",
+      "english": "This is a miracle.",
+      "chinese": "这是一个奇迹。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "muscle",
+      "english": "The cat didn't move a muscle.",
+      "chinese": "小猫一动也不动。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "network",
+      "english": "I hear that the network is very popular now.",
+      "chinese": "听说大数据技术现在很热门。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "occasionally",
+      "english": "He occasionally visited me.",
+      "chinese": "他偶尔会来拜访我。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "original",
+      "english": "That's an original idea.",
+      "chinese": "那是原创的想法。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "pan",
+      "english": "The pan boiled dry.",
+      "chinese": "锅烧干了。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "pearl",
+      "english": "His teeth are white like a pearl.",
+      "chinese": "他的牙齿白得像珍珠一样。",
+      "tier": 1
+    },
+    {
+      "level": "CET4",
+      "word": "pigeon",
+      "english": "He used pigeons in his experiment.",
+      "chinese": "他的实验用了鸽子。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "political",
+      "english": "I support political reform.",
+      "chinese": "我支持政治改革。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "predict",
+      "english": "No one could predict the outcome of this cooperation.",
+      "chinese": "没人能够预言这次合作的结果。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "process",
+      "english": "Learning is a gradual process.",
+      "chinese": "学习是一个循序渐进的过程。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "publication",
+      "english": "Publication of the article was timed to coincide with the professor's birthday.",
+      "chinese": "文章的发表被预定在教授生日那天。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "rag",
+      "english": "She's on the rag.",
+      "chinese": "她的老朋友来了。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "recommend",
+      "english": "I recommend it strongly.",
+      "chinese": "我强力推荐它。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "relevant",
+      "english": "Comments must be relevant to the topic.",
+      "chinese": "评论要与主题相关。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "resign",
+      "english": "My boss was forced to resign.",
+      "chinese": "我的上司被逼迫辞职。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "rise",
+      "english": "Prices continued to rise.",
+      "chinese": "物价持续上涨。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "rusty",
+      "english": "Your knife is rusty.",
+      "chinese": "你的刀生锈了。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "scent",
+      "english": "The scent of cedar repels moths.",
+      "chinese": "雪松的气味可以驱赶飞蛾。",
+      "tier": 3
+    },
+    {
+      "level": "CET4",
+      "word": "series",
+      "english": "He has just published an interesting series of articles.",
+      "chinese": "他刚发表一系列有趣的文章。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "shriek",
+      "english": "She shrieked whenever she saw a spider.",
+      "chinese": "她一看到蜘蛛就尖叫。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "slightly",
+      "english": "The professor smiled slightly.",
+      "chinese": "教授微微笑了笑。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "sophisticated",
+      "english": "A vast and sophisticated system is usually based on a few simple rules.",
+      "chinese": "庞大而精妙的体系往往建立在几个简单的规则之上。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "splendid",
+      "english": "I never saw such a splendid sunset.",
+      "chinese": "我从没见过那么壮丽的日落景色。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "steal",
+      "english": "Hunger urged him to steal.",
+      "chinese": "饥饿促使他偷窃。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "structure",
+      "english": "The school's tallest structure is that water tower.",
+      "chinese": "学校最高的建筑就是那个水塔。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "surname",
+      "english": "I take my mother's surname.",
+      "chinese": "我跟我妈妈姓。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "tape",
+      "english": "This tape recorder is not new.",
+      "chinese": "这个磁带录音机不是新的。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "thirst",
+      "english": "I'm dying of thirst.",
+      "chinese": "我渴得要命。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "top",
+      "english": "He is driving at top speed.",
+      "chinese": "他全速驾驶着。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "tremendous",
+      "english": "The rocket travels at a tremendous speed.",
+      "chinese": "火箭飞得极快。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "uncomfortable",
+      "english": "This chair is uncomfortable.",
+      "chinese": "这个椅子坐着不舒服。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "urge",
+      "english": "Lawyers will urge the parents to take further legal action.",
+      "chinese": "律师们会力劝家长们采取进一步的法律行动。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "view",
+      "english": "The bird vanished from view.",
+      "chinese": "鸟儿从我的视线中消失了。",
+      "tier": 0
+    },
+    {
+      "level": "CET4",
+      "word": "weary",
+      "english": "A foolish head makes for weary feet.",
+      "chinese": "愚笨的头脑使腿受苦。",
+      "tier": 2
+    },
+    {
+      "level": "CET4",
+      "word": "witness",
+      "english": "He witnessed the accident.",
+      "chinese": "他目击了那件意外。",
+      "tier": 2
+    },
+    {
+      "level": "CET6",
+      "word": "addict",
+      "english": "She's a blog addict.",
+      "chinese": "她是一个微博控。",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "alongside",
+      "english": "Native Chinese people are working alongside foreigners to change the culture of Shanghai.",
+      "chinese": "本地人、外来人齐心共创上海新文明。",
+      "tier": 1
+    },
+    {
+      "level": "CET6",
+      "word": "appreciate",
+      "english": "I appreciate your comment.",
+      "chinese": "谢谢您的评论。",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "astronaut",
+      "english": "She will be the first Japanese woman astronaut.",
+      "chinese": "她将会成为日本第一个女性太空人。",
+      "tier": 2
+    },
+    {
+      "level": "CET6",
+      "word": "barely",
+      "english": "I can barely see you.",
+      "chinese": "我快看不到你了。",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "bless",
+      "english": "Thank you. God bless you. And may God bless the United States of America.",
+      "chinese": "感谢你们。上帝保佑你们。愿上帝保佑美利坚合众国",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "bunch",
+      "english": "Smokers are a bunch of idiots.",
+      "chinese": "烟民都是一群傻瓜。",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "capture",
+      "english": "We were never able to capture him.",
+      "chinese": "我们一直抓不住他。",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "chaos",
+      "english": "The world is in chaos.",
+      "chinese": "世界处于混沌之中。",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "civil",
+      "english": "America's Civil War lasted four years.",
+      "chinese": "南北战争持续了四年。",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "colonel",
+      "english": "He advanced to colonel.",
+      "chinese": "他晋升为大佐。",
+      "tier": 0
+    },
+    {
+      "level": "CET6",
+      "word": "complain",
+      "english": "Farmers always complain about the weather.",
+      "chinese": "农民总是抱怨天气。",
+      "tier": 0
+    }
+  ]
+}

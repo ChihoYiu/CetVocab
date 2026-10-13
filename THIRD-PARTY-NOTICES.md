@@ -58,6 +58,39 @@ SOFTWARE.
 
 ---
 
+## 2b. 例句数据：Tatoeba（CC BY 2.0 FR）
+
+`cet4.json` / `cet6.json` 中的 `exampleSentence` / `exampleTranslation` 字段来自 **The Tatoeba Project**
+（<https://tatoeba.org>）的英文句与中文译文。ECDICT 本身不含例句，因此例句是**第二个来源**，
+按 CC BY 2.0 FR 的要求在此署名：
+
+| 项 | 值 |
+| --- | --- |
+| 项目 | The Tatoeba Project（<https://tatoeba.org>），句子由项目贡献者撰写 |
+| 许可 | CC BY 2.0 FR（<https://creativecommons.org/licenses/by/2.0/fr/>） |
+| 快照时间 | 2026-10-13T02:09:54Z（UTC，固定快照） |
+| 原始文件 | `eng_sentences.tsv.bz2`、`cmn_sentences.tsv.bz2`、`cmn-eng_links.tsv.bz2` |
+| 快照指纹 | 字节数与 SHA-256 见 `tools/wordpack/cache/tatoeba/PROVENANCE.json` |
+| 逐句可追溯 | `docs/EXAMPLE_SENTENCE_SOURCES.tsv` 记录「词 → Tatoeba 英文句 id / 中文句 id」 |
+| 生成脚本 | `tools/wordpack/build_tatoeba_pairs.py`、`tools/wordpack/attach_examples.py` |
+
+处理方式：只做筛选（句长、标点、超纲词、人名）与**单句选取**，不改写句子内容；
+含繁体字的译文用 **OpenCC**（Apache-2.0）的字符/短语表做构建期转写，OpenCC 的词表**不随应用分发**。
+每个词最多使用一句，无可选句子的词条字段留空（应用会隐藏空例句）。
+
+---
+
+## 2c. 冷启动提示语：本项目自撰（CC0-1.0）
+
+`app/src/main/assets/motivation/tips.json` 中的 398 条开屏提示语是**为本项目撰写的原创短句**，
+没有引用任何名人名言、书籍或第三方文本（因此不存在「虚构名人名言」的问题），
+以 CC0-1.0（公共领域贡献）发布。条目由 `tools/motivation/parts/*.json` 经
+`tools/motivation/build_tips.py` 合并生成（按条去重、按分类排序、逐条分配 id），
+校验脚本为 `tools/motivation/validate_tips.py`，回归测试为
+`app/src/test/.../domain/motivation/StartupTipTest.kt`。
+
+---
+
 ## 3. 未采用的候选数据源（仅记录，仓库不含其数据）
 
 选型阶段比较过的候选，因许可或权利链问题**未采用**，仓库中不包含它们的任何数据；

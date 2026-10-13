@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -40,6 +41,7 @@ import com.cetvocab.app.ui.components.AppCard
 import com.cetvocab.app.ui.components.EmptyState
 import com.cetvocab.app.ui.components.LoadingState
 import com.cetvocab.app.ui.components.ReviewBadge
+import com.cetvocab.app.ui.components.SectionHeader
 import com.cetvocab.app.ui.components.WordSearchBar
 import com.cetvocab.app.ui.theme.AppTheme
 import com.cetvocab.app.ui.theme.CetVocabTheme
@@ -119,9 +121,10 @@ fun WordBrowserScreen(
                         .testTag("browser_loading"),
                 )
 
-                state.results.isEmpty() -> EmptyState(
+                state.nothingFound -> EmptyState(
                     title = "没有找到匹配的单词",
-                    description = "试试只输入单词的前几个字母，或者换一个中文释义关键词。",
+                    description = "试试只输入单词的前几个字母，或者换一个中文释义关键词；" +
+                        "只记得大概拼写时，写出你记得的那部分也可以。",
                     modifier = Modifier
                         .fillMaxSize()
                         .testTag("browser_empty"),
@@ -141,21 +144,68 @@ fun WordBrowserScreen(
                             modifier = Modifier.animateItem(),
                         )
                     }
+
+                    // The correction list is shown as its own labelled section: it answers a
+                    // different question ("did you mean") and must never be mistaken for an exact
+                    // hit. It only exists when the exact search found almost nothing.
+                    if (state.approximations.isNotEmpty()) {
+                        item(key = "approximation_header") {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = Spacing.md),
+                                verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+                            ) {
+                                SectionHeader(title = "拼写相近的单词")
+                                Text(
+                                    text = "下面这些是拼写最接近的词条，请确认是不是你要找的词；" +
+                                        "结果与本地词库一一对应，不存在词库以外的词。",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = AppTheme.colors.mutedText,
+                                    modifier = Modifier.testTag("browser_approximation_note"),
+                                )
+                            }
+                        }
+                        items(
+                            items = state.approximations,
+                            key = { "approximation-${it.word.id}" },
+                        ) { item ->
+                            WordBrowserRow(
+                                item = item,
+                                isApproximation = true,
+                                onClick = { onOpenWord(item.word.id) },
+                                modifier = Modifier.animateItem(),
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 }
 
+/**
+ * One result row: word, phonetic, part of speech, Chinese meaning and — when the vocabulary has one
+ * — the English example sentence.
+ *
+ * Everything shown comes from the local database; a field the source data does not have is simply
+ * left out rather than filled with a guess. The example is clamped to one line here (the full
+ * sentence and its translation are on the word detail screen), so a long sentence cannot push the
+ * next result off the fold.
+ */
 @Composable
 private fun WordBrowserRow(
     item: WordWithProgress,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isApproximation: Boolean = false,
 ) {
     AppCard(modifier = modifier.fillMaxWidth(), onClick = onClick) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+            ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = item.word.word, style = MaterialTheme.typography.titleMedium)
                     if (item.word.phonetic.isNotBlank()) {
@@ -165,12 +215,42 @@ private fun WordBrowserRow(
                             color = AppTheme.colors.mutedText,
                         )
                     }
+                    if (item.word.partOfSpeech.isNotBlank()) {
+                        Text(
+                            text = "  ${item.word.partOfSpeech}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = AppTheme.colors.mutedText,
+                        )
+                    }
+                    if (isApproximation) {
+                        Text(
+                            text = "  拼写相近",
+                            style = MaterialTheme.typography.labelSmall,
+                            color = AppTheme.colors.warning,
+                            modifier = Modifier.testTag("browser_approximation_badge"),
+                        )
+                    }
                 }
                 Text(
-                    text = item.word.meaningLabel,
+                    // Up to three senses rather than only the first: a search by Chinese meaning can
+                    // match a sense that is not the primary one, and showing just the primary would
+                    // hide the very text the learner searched for.
+                    text = item.word.meanings.take(3).joinToString("；")
+                        .ifBlank { item.word.primaryMeaning },
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
+                if (item.word.exampleSentence.isNotBlank()) {
+                    Text(
+                        text = item.word.exampleSentence,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = AppTheme.colors.mutedText,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
             }
             if (item.progress.status != com.cetvocab.app.domain.srs.MasteryStatus.NEW) {
                 ReviewBadge(

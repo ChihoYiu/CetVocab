@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.cetvocab.app.core.result.Outcome
 import com.cetvocab.app.domain.model.CetLevel
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,6 +28,62 @@ class BuiltInPackAssetTest {
 
     private val context = ApplicationProvider.getApplicationContext<android.content.Context>()
     private val loader = BuiltInPackLoader(context)
+
+    /**
+     * Spellings of [word] that count as "the word appears in the sentence".
+     *
+     * The same regular inflections the attach step allowed when it chose the sentence
+     * (`tools/wordpack/attach_examples.py`, `surface_forms`): conservative on purpose, so that a
+     * sentence which merely contains a look-alike (`kind` for `kin`) is not accepted as an example
+     * of the word.
+     */
+    private fun surfaceForms(word: String): Set<String> {
+        val w = word.lowercase()
+        val forms = mutableSetOf(w)
+        val doubles = w.length > 2 && w.last() !in "aeiou" && w[w.length - 2] in "aeiou" &&
+            w[w.length - 3] !in "aeiou"
+        val shortDouble = doubles && w.length <= 4
+
+        when {
+            w.endsWith("s") || w.endsWith("x") || w.endsWith("z") ||
+                w.endsWith("ch") || w.endsWith("sh") -> {
+                forms += w + "es"
+                forms += w + "ed"
+            }
+
+            w.endsWith("y") && w.length > 2 && w[w.length - 2] !in "aeiou" -> {
+                forms += w.dropLast(1) + "ies"
+                forms += w.dropLast(1) + "ied"
+            }
+
+            w.endsWith("e") -> {
+                forms += w + "s"
+                forms += w + "d"
+            }
+
+            else -> {
+                forms += w + "s"
+                forms += if (shortDouble) w + w.last() + "ed" else w + "ed"
+            }
+        }
+
+        when {
+            w.endsWith("e") && !w.endsWith("ee") -> forms += w.dropLast(1) + "ing"
+            shortDouble -> {
+                forms += w + w.last() + "ing"
+                forms += w + w.last() + "ed"
+            }
+
+            else -> {
+                forms += w + "ing"
+                if (doubles) {
+                    forms += w + w.last() + "ing"
+                    forms += w + w.last() + "ed"
+                }
+            }
+        }
+        return forms
+    }
 
     @Test
     fun `the manifest describes both levels`() = runTest {
@@ -99,9 +156,49 @@ class BuiltInPackAssetTest {
         }
     }
 
+    /**
+     * The example sentences added in this iteration.
+     *
+     * Three properties matter for the product: the sentences are English, they really contain the
+     * word they are attached to (or a regular inflection of it), and they come with a Chinese
+     * translation. Coverage is asserted as a lower bound — a word with no acceptable sentence keeps
+     * an empty field, and the app hides it rather than inventing one.
+     */
     @Test
-    fun `the two levels overlap the way the source does`() = runTest {
-        val cet4 = (loader.load(loader.definitions().first { it.level == CetLevel.CET4 }) as Outcome.Success)
+    fun `the shipped packs carry offline example sentences that contain their word`() = runTest {
+        loader.definitions().forEach { definition ->
+            val records = (loader.load(definition) as Outcome.Success).value.records
+            val withExample = records.filter { it.exampleSentence.isNotBlank() }
+            val withTranslation = records.filter { it.exampleTranslation.isNotBlank() }
+
+            assertThat(withExample.size.toDouble() / records.size).isAtLeast(0.60)
+            // An example without a translation would leave half the feature empty on screen.
+            assertThat(withTranslation.size).isEqualTo(withExample.size)
+
+            withExample.forEach { record ->
+                val sentence = record.exampleSentence
+                val words = sentence.split(Regex("[^A-Za-z'’-]+")).filter { it.isNotBlank() }
+                assertWithMessage("${record.word}: $sentence").that(words.size).isAtLeast(4)
+                assertWithMessage("${record.word}: $sentence").that(words.size).isAtMost(20)
+                assertThat(".!?".contains(sentence.last())).isTrue()
+                // English only, no digits: the sentence is a reading aid, not a second puzzle.
+                assertThat(sentence.any { it.isDigit() }).isFalse()
+                assertThat(sentence.any { it.code in 0x4E00..0x9FFF }).isFalse()
+
+                val lower = words.map { it.lowercase() }
+                val forms = surfaceForms(record.word)
+                assertWithMessage("${record.word} does not appear in: $sentence")
+                    .that(lower.any { it in forms }).isTrue()
+
+                // The Chinese side must be Chinese, and must not smuggle the English word in.
+                assertThat(record.exampleTranslation.any { it.code in 0x4E00..0x9FFF }).isTrue()
+                assertThat(Regex("[A-Za-z]{2,}").containsMatchIn(record.exampleTranslation)).isFalse()
+            }
+        }
+    }
+
+    @Test
+    fun `the two levels overlap the way the source does`() = runTest {        val cet4 = (loader.load(loader.definitions().first { it.level == CetLevel.CET4 }) as Outcome.Success)
             .value.records.map { it.word.lowercase() }.toSet()
         val cet6 = (loader.load(loader.definitions().first { it.level == CetLevel.CET6 }) as Outcome.Success)
             .value.records.map { it.word.lowercase() }.toSet()
@@ -147,7 +244,7 @@ class BuiltInPackAssetTest {
             val cet4Pack = database.wordDao().packById("builtin-cet4")
             assertThat(cet4Pack).isNotNull()
             assertThat(cet4Pack!!.isBuiltIn).isTrue()
-            assertThat(cet4Pack.version).isEqualTo("2")
+            assertThat(cet4Pack.version).isEqualTo("3")
 
             // A word from the list is found by prefix and by meaning, i.e. the browser works on
             // the real data.

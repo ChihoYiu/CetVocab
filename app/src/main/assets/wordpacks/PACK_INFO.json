@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "sourceRepo": "https://github.com/skywind3000/ECDICT",
   "sourceCommit": "bc015ed2e24a7abef49fc6dbbb7fe32c1dadaf8b",
   "sourceUrls": {
@@ -16,7 +16,7 @@
   "licenceCopyright": "Copyright (c) 2025 Linwei",
   "downloadedAt": "2026-10-10T02:58:00Z",
   "generatedAt": "2026-10-10T02:58:00Z",
-  "transformNotes": "Rows of ECDICT ecdict.csv whose 'tag' column contains cet4 / cet6 respectively; one word pack per level. 'meanings' comes from splitting the source 'translation' cell on newlines (a literal backslash-n in a few rows is treated as a newline too). A leading part-of-speech marker (n. / v. / vt. / vi. / a. / adv. ...) is removed from the meaning text and recorded in 'partOfSpeech' only when the whole entry uses exactly one distinct marker; entries with mixed markers keep their text verbatim, marker included. 'phonetic' is the source 'phonetic' column with one leading and trailing slash added when absent; ECDICT carries a single transcription, so phoneticUs and phoneticUk are empty strings and 'phonetic' holds that single value. ECDICT has no example sentences, no collocations and no separate US/UK phonetics, so those fields are empty rather than invented. Rows with an empty word or an empty translation were dropped; case-insensitive duplicates inside one list kept the richest row. 'id' is level + 1-based index in the emitted order.",
+  "transformNotes": "Rows of ECDICT ecdict.csv whose 'tag' column contains cet4 / cet6 respectively; one word pack per level. 'meanings' comes from splitting the source 'translation' cell on newlines (a literal backslash-n in a few rows is treated as a newline too). A leading part-of-speech marker (n. / v. / vt. / vi. / a. / adv. ...) is removed from the meaning text and recorded in 'partOfSpeech' only when the whole entry uses exactly one distinct marker; entries with mixed markers keep their text verbatim, marker included. 'phonetic' is the source 'phonetic' column with one leading and trailing slash added when absent; ECDICT carries a single transcription, so phoneticUs and phoneticUk are empty strings and 'phonetic' holds that single value. ECDICT has no example sentences, no collocations and no separate US/UK phonetics, so those fields are empty rather than invented. Rows with an empty word or an empty translation were dropped; case-insensitive duplicates inside one list kept the richest row. 'id' is level + 1-based index in the emitted order. Example sentences are a second stage (tools/wordpack/attach_examples.py): one Tatoeba sentence per word, selected for readability and never invented. Words with no acceptable sentence keep an empty example field; the app hides an empty example instead of faking one. Example sentences are a second stage (tools/wordpack/attach_examples.py): one Tatoeba sentence per word, selected for readability and never invented. Words with no acceptable sentence keep an empty example field; the app hides an empty example instead of faking one. Example sentences are a second stage (tools/wordpack/attach_examples.py): one Tatoeba sentence per word, selected for readability and never invented. Words with no acceptable sentence keep an empty example field; the app hides an empty example instead of faking one. Example sentences are a second stage (tools/wordpack/attach_examples.py): one Tatoeba sentence per word, selected for readability and never invented. Words with no acceptable sentence keep an empty example field; the app hides an empty example instead of faking one.",
   "wordCounts": {
     "CET4": 3849,
     "CET6": 5407
@@ -30,8 +30,8 @@
       "phoneticUk": 0,
       "partOfSpeech": 1988,
       "meanings": 3849,
-      "exampleSentence": 0,
-      "exampleTranslation": 0,
+      "exampleSentence": 3230,
+      "exampleTranslation": 3230,
       "collocations": 0,
       "duplicatesInList": 0,
       "droppedEmptyWord": 0,
@@ -45,8 +45,8 @@
       "phoneticUk": 0,
       "partOfSpeech": 3055,
       "meanings": 5407,
-      "exampleSentence": 0,
-      "exampleTranslation": 0,
+      "exampleSentence": 3695,
+      "exampleTranslation": 3695,
       "collocations": 0,
       "duplicatesInList": 0,
       "droppedEmptyWord": 0,
@@ -65,5 +65,78 @@
     },
     "script": "tools/wordpack/normalize_phonetics.py",
     "note": "Pure notation transliteration of the source's Kingsoft-style phonetics; no pronunciation was added, changed or invented."
+  },
+  "examples": {
+    "source": "Tatoeba (https://tatoeba.org) — English sentences with Chinese translations",
+    "licence": "Tatoeba sentences are licensed CC BY 2.0 FR — https://creativecommons.org/licenses/by/2.0/fr/ ; attribution: the Tatoeba Project, https://tatoeba.org",
+    "attribution": "The Tatoeba Project and its contributors; per-word sentence ids in docs/EXAMPLE_SENTENCE_SOURCES.tsv",
+    "snapshotDateUtc": "2026-10-13T02:09:54Z",
+    "sourceFiles": [
+      {
+        "name": "eng_sentences.tsv.bz2",
+        "url": "https://downloads.tatoeba.org/exports/per_language/eng/eng_sentences.tsv.bz2",
+        "local_path": "tools/wordpack/cache/tatoeba/eng_sentences.tsv.bz2",
+        "bytes": 24904358,
+        "sha256": "0eabb52f54350bbb39807190920bfddaf9fee2ba50ca75af67e11a22ec475c29",
+        "http_status": 200,
+        "format": "bz2-compressed TSV, no header: id <TAB> eng <TAB> text",
+        "download_date_utc": "2026-10-13T02:09:54Z"
+      },
+      {
+        "name": "cmn_sentences.tsv.bz2",
+        "url": "https://downloads.tatoeba.org/exports/per_language/cmn/cmn_sentences.tsv.bz2",
+        "local_path": "tools/wordpack/cache/tatoeba/cmn_sentences.tsv.bz2",
+        "bytes": 1258831,
+        "sha256": "91ded8d50ee05db5aca76e23dd9c7f2eeb2e948bcb538fa301cc82f8f4d8048e",
+        "http_status": 200,
+        "format": "bz2-compressed TSV, no header: id <TAB> cmn <TAB> text",
+        "download_date_utc": "2026-10-13T02:09:54Z"
+      },
+      {
+        "name": "cmn-eng_links.tsv.bz2",
+        "url": "https://downloads.tatoeba.org/exports/per_language/cmn/cmn-eng_links.tsv.bz2",
+        "local_path": "tools/wordpack/cache/tatoeba/cmn-eng_links.tsv.bz2",
+        "bytes": 481441,
+        "sha256": "82b1c58d73e3e1b2310fb4f2c3dcb13de1043a109aafea07ba9cbbb98bc7409e",
+        "http_status": 200,
+        "format": "bz2-compressed TSV, no header: cmn_sentence_id <TAB> eng_sentence_id",
+        "download_date_utc": "2026-10-13T02:09:54Z"
+      }
+    ],
+    "pairCount": 68553,
+    "traditionalToSimplifiedTool": "OpenCC TSCharacters/TSPhrases (Apache-2.0), used at build time only and not redistributed",
+    "selection": "One sentence per word: exact form preferred over a regular inflection; Simplified Chinese preferred (Traditional converted with the OpenCC tables); fewest out-of-vocabulary tokens against CET-4/CET-6 + an ECDICT frequency core + function words; no proper names; shortest sentence wins; longest Tatoeba id as tie-break.",
+    "perLevel": {
+      "CET4": {
+        "words": 3849,
+        "withExample": 3230,
+        "withoutExample": 619,
+        "coveragePercent": 83.92,
+        "translationConvertedFromTraditional": 537,
+        "matchedThroughInflection": 269,
+        "qualityTierHistogram": {
+          "0": 2470,
+          "1": 176,
+          "2": 492,
+          "3": 88,
+          "4": 4
+        }
+      },
+      "CET6": {
+        "words": 5407,
+        "withExample": 3695,
+        "withoutExample": 1712,
+        "coveragePercent": 68.34,
+        "translationConvertedFromTraditional": 779,
+        "matchedThroughInflection": 401,
+        "qualityTierHistogram": {
+          "0": 2591,
+          "1": 245,
+          "2": 703,
+          "3": 147,
+          "4": 9
+        }
+      }
+    }
   }
 }

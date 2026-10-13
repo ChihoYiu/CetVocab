@@ -362,6 +362,29 @@ class ComposeFlowTest {
     // --- Settings -----------------------------------------------------------------------
 
     @Test
+    fun `home offers the vocabulary search`() {
+        var opened = false
+        composeRule.setContent {
+            CetVocabTheme {
+                HomeScreen(
+                    container = container,
+                    onStartStudy = {},
+                    onResumeStudy = {},
+                    onStartMistakeDrill = {},
+                    onOpenReviewCenter = {},
+                    onOpenStats = {},
+                    onOpenWordBrowser = { opened = true },
+                )
+            }
+        }
+
+        awaitTag("home_open_word_browser")
+        composeRule.onNodeWithTag("home_open_word_browser").assertIsDisplayed().performClick()
+
+        assertTrue("the app bar search action must open the vocabulary browser", opened)
+    }
+
+    @Test
     fun `changing the theme in settings survives a re-read of the datastore`() {
         composeRule.setContent {
             CetVocabTheme { SettingsScreen(container = container, onBack = {}) }

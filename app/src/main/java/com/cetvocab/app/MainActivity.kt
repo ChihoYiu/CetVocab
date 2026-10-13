@@ -35,6 +35,9 @@ class MainActivity : ComponentActivity() {
             CetVocabApp(
                 container = container,
                 state = state.value,
+                // The start-up line's "skip" action: a tap leaves the screen immediately instead of
+                // waiting for the timer in the ViewModel.
+                onDismissStartupTip = mainViewModel::dismissStartupTip,
             )
         }
     }

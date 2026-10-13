@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "note": "Built-in vocabulary shipped with the app. The JSON files are produced by tools/wordpack/build_packs.py from skywind3000/ECDICT (MIT) and validated by tools/wordpack/validate_packs.py; see docs/WORD_PACK_VALIDATION.md for the measured counts, the licence text and the residual risks.",
+  "note": "Built-in vocabulary shipped with the app. The JSON files are produced by tools/wordpack/build_packs.py from skywind3000/ECDICT (MIT) and then enriched with example sentences by tools/wordpack/attach_examples.py from a dated Tatoeba snapshot (CC BY 2.0 FR); validated by tools/wordpack/validate_packs.py. See docs/WORD_PACK_VALIDATION.md for the measured counts and residual risks.",
   "packs": [
     {
       "id": "builtin-cet4",
       "asset": "wordpacks/cet4.json",
       "level": "CET4",
       "name": "CET-4 词汇",
-      "version": 2,
+      "version": 3,
       "wordCount": 3849
     },
     {
@@ -15,7 +15,7 @@
       "asset": "wordpacks/cet6.json",
       "level": "CET6",
       "name": "CET-6 词汇",
-      "version": 2,
+      "version": 3,
       "wordCount": 5407
     }
   ]

@@ -79,6 +79,29 @@ interface WordDao {
     )
     suspend fun search(level: String, search: String, like: String, prefix: String, limit: Int): List<WordWithProgressView>
 
+    /**
+     * Candidate rows for the approximate ("你是不是想找…") search.
+     *
+     * The band is deliberately coarse — only a length window, ordered so the result never depends
+     * on row order — because the real filtering is the edit distance computed in
+     * `ApproximateWordMatcher`. A `LIKE` cannot do that job: it cannot ask for "within two edits".
+     * The window is bounded by [limit], and a typical level has far fewer words in any one window.
+     */
+    @Query(
+        """
+        SELECT * FROM word_with_progress
+        WHERE level = :level AND length(word) BETWEEN :minLength AND :maxLength
+        ORDER BY word ASC
+        LIMIT :limit
+        """,
+    )
+    suspend fun byWordLengthBand(
+        level: String,
+        minLength: Int,
+        maxLength: Int,
+        limit: Int,
+    ): List<WordWithProgressView>
+
     @Query("SELECT * FROM word WHERE id = :id")
     suspend fun byId(id: Long): WordEntity?
 

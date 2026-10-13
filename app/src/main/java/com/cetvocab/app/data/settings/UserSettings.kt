@@ -53,6 +53,13 @@ data class UserSettings(
     val examDurationMinutes: Int = 15,
     /** Day key (`yyyy-MM-dd`) of the last motivational line shown on the home screen. */
     val lastMotivationDayKey: String? = null,
+    /**
+     * Id of the start-up line shown on the previous cold start.
+     *
+     * Only used to avoid showing the same line twice in a row; it is never shown to the learner and
+     * carries no study data.
+     */
+    val lastStartupTipId: String? = null,
     /** Highest streak value already celebrated, so a new record is announced exactly once. */
     val celebratedStreak: Int = 0,
     /** Highest vocabulary milestone already celebrated. */

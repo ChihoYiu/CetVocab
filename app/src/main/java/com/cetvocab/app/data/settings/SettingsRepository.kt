@@ -53,6 +53,13 @@ interface SettingsRepository {
     /** Records that today's motivational line has been shown, so it appears once per day. */
     suspend fun setLastMotivationDayKey(dayKey: String)
 
+    /**
+     * Records which start-up line was shown last, so the next cold start can avoid repeating it.
+     *
+     * It lives in preferences rather than in memory precisely because the process is gone by then.
+     */
+    suspend fun setLastStartupTipId(id: String)
+
     /** Records a celebrated streak / milestone so the same achievement is not announced twice. */
     suspend fun setCelebratedStreak(value: Int)
     suspend fun setCelebratedMilestone(value: Int)
@@ -131,6 +138,10 @@ class DataStoreSettingsRepository(private val context: Context) : SettingsReposi
         context.settingsDataStore.edit { it[Keys.LAST_MOTIVATION_DAY] = dayKey }
     }
 
+    override suspend fun setLastStartupTipId(id: String) {
+        context.settingsDataStore.edit { it[Keys.LAST_STARTUP_TIP] = id }
+    }
+
     override suspend fun setCelebratedStreak(value: Int) {
         context.settingsDataStore.edit { prefs ->
             val current = prefs[Keys.CELEBRATED_STREAK] ?: 0
@@ -182,6 +193,7 @@ class DataStoreSettingsRepository(private val context: Context) : SettingsReposi
                 this[Keys.SPEECH_RATE_MODE] ?: defaults.speechRateMode.id,
             ),
             lastMotivationDayKey = this[Keys.LAST_MOTIVATION_DAY],
+            lastStartupTipId = this[Keys.LAST_STARTUP_TIP],
             celebratedStreak = this[Keys.CELEBRATED_STREAK] ?: defaults.celebratedStreak,
             celebratedMilestone = this[Keys.CELEBRATED_MILESTONE] ?: defaults.celebratedMilestone,
             examQuestionCount = UserSettings.clampExamQuestions(
@@ -214,6 +226,7 @@ class DataStoreSettingsRepository(private val context: Context) : SettingsReposi
         val READ_EXAMPLES = booleanPreferencesKey("read_example_sentences")
         val SPEECH_RATE_MODE = stringPreferencesKey("speech_rate_mode")
         val LAST_MOTIVATION_DAY = stringPreferencesKey("last_motivation_day")
+        val LAST_STARTUP_TIP = stringPreferencesKey("last_startup_tip_id")
         val CELEBRATED_STREAK = intPreferencesKey("celebrated_streak")
         val CELEBRATED_MILESTONE = intPreferencesKey("celebrated_milestone")
         val EXAM_QUESTIONS = intPreferencesKey("exam_questions")

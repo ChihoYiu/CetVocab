@@ -5,6 +5,8 @@ import com.cetvocab.app.core.time.SystemTimeProvider
 import com.cetvocab.app.core.time.TimeProvider
 import com.cetvocab.app.data.io.DocumentIo
 import com.cetvocab.app.data.local.CetVocabDatabase
+import com.cetvocab.app.data.motivation.AssetStartupTipSource
+import com.cetvocab.app.data.motivation.StartupTipSource
 import com.cetvocab.app.data.repository.DefaultInsightRepository
 import com.cetvocab.app.data.repository.InsightRepository
 import com.cetvocab.app.data.speech.SpeechDiagnostic
@@ -96,6 +98,14 @@ class AppContainer(
     val appVersionName: String = runCatching {
         context.packageManager.getPackageInfo(context.packageName, 0).versionName.orEmpty()
     }.getOrDefault("")
+
+    /**
+     * The start-up encouragement lines (开屏提示语).
+     *
+     * Read from the bundled asset with no network access at all; a missing or corrupt asset
+     * degrades to one built-in fallback line.
+     */
+    val startupTipSource: StartupTipSource = AssetStartupTipSource(context)
 
     /**
      * Reads the inputs the learning-analysis rules need.

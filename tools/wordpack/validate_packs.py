@@ -19,7 +19,9 @@ SCHEMA_KEYS = {
     "id", "word", "phonetic", "phoneticUs", "phoneticUk", "partOfSpeech", "meanings",
     "exampleSentence", "exampleTranslation", "collocations", "level", "source", "license",
 }
-PACK_KEYS = {"version", "name", "defaultLevel", "source", "license", "words"}
+# `exampleSource` is written by tools/wordpack/attach_examples.py: the example sentences come from
+# a second source (Tatoeba, CC BY 2.0 FR) whose attribution belongs next to the data it covers.
+PACK_KEYS = {"version", "name", "defaultLevel", "source", "license", "words", "exampleSource"}
 
 ASCII_LETTER = re.compile(r"[A-Za-z]")
 NON_ASCII_LETTER = re.compile(r"[^\x00-\x7f]")
@@ -162,8 +164,13 @@ def main():
         }
     report["completeness"] = source
 
-    with open(os.path.join(HERE, "validation_report.json"), "w", encoding="utf-8") as fh:
+    # newline="" keeps the report LF-only on Windows as well: the repository normalises text files
+    # to LF, and a CRLF report would show up as a whole-file diff on every re-run.
+    with open(
+        os.path.join(HERE, "validation_report.json"), "w", encoding="utf-8", newline=""
+    ) as fh:
         json.dump(report, fh, ensure_ascii=False, indent=2)
+        fh.write("\n")
 
     # console summary
     for level in ("CET4", "CET6"):

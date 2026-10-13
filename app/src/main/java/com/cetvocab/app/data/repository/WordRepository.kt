@@ -24,8 +24,11 @@ import com.cetvocab.app.domain.importer.PackFormat
 import com.cetvocab.app.domain.model.CetLevel
 import com.cetvocab.app.domain.model.Word
 import com.cetvocab.app.domain.model.WordWithProgress
+import com.cetvocab.app.domain.search.ApproximateWordMatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.yield
 
 /**
@@ -76,9 +79,44 @@ interface WordRepository {
      */
     suspend fun search(level: CetLevel, query: String, limit: Int = SEARCH_LIMIT): List<WordWithProgress>
 
+    /**
+     * Close spellings of [query] — the "你是不是想找" list.
+     *
+     * Only consulted when the exact search came up short (see [APPROX_STRICT_THRESHOLD]): a learner
+     * who already found what they wanted must not be handed a list of unrelated words. Returns an
+     * empty list for a query that is not a plain English word, for a level whose length band holds
+     * nothing, and for anything the edit distance rejects — never a guess about a word that does
+     * not exist in the local vocabulary.
+     */
+    suspend fun searchApproximate(
+        level: CetLevel,
+        query: String,
+        strictMatchCount: Int,
+        limit: Int = APPROX_LIMIT,
+    ): List<WordWithProgress>
+
     companion object {
         /** Bounded result size: the browser pages through the list instead of loading 10k rows. */
         const val SEARCH_LIMIT = 200
+
+        /** At most this many "did you mean" suggestions. */
+        const val APPROX_LIMIT = 12
+
+        /**
+         * The exact search is considered "good enough" from this many hits upwards.
+         *
+         * Above it the learner already has something to choose from, and a correction list would
+         * only add noise.
+         */
+        const val APPROX_STRICT_THRESHOLD = 8
+
+        /**
+         * Hard cap on the rows the edit-distance pass may see.
+         *
+         * The length band already keeps this small; the cap is what guarantees that a pathological
+         * query cannot turn into a full-table scan in Kotlin.
+         */
+        const val APPROX_CANDIDATE_LIMIT = 4_000
     }
 }
 
@@ -270,6 +308,39 @@ class DefaultWordRepository(
         val like = likePattern(trimmed)
         val prefix = prefixPattern(trimmed)
         return db.wordDao().search(level.id, trimmed, like, prefix, limit).map { it.toWordWithProgress() }
+    }
+
+    override suspend fun searchApproximate(
+        level: CetLevel,
+        query: String,
+        strictMatchCount: Int,
+        limit: Int,
+    ): List<WordWithProgress> {
+        if (strictMatchCount >= WordRepository.APPROX_STRICT_THRESHOLD) return emptyList()
+        if (!ApproximateWordMatcher.isApplicable(query)) return emptyList()
+
+        val needle = Word.normalizeWordKey(query)
+        if (needle.isEmpty()) return emptyList()
+        val maxDistance = ApproximateWordMatcher.maxDistanceFor(needle.length)
+
+        val rows = db.wordDao().byWordLengthBand(
+            level = level.id,
+            minLength = (needle.length - maxDistance).coerceAtLeast(1),
+            maxLength = needle.length + maxDistance,
+            limit = WordRepository.APPROX_CANDIDATE_LIMIT,
+        )
+        if (rows.isEmpty()) return emptyList()
+
+        val byNormalized = rows.associateBy { Word.normalizeWordKey(it.word) }
+        val ranked = withContext(Dispatchers.Default) {
+            ApproximateWordMatcher.rank(
+                query = needle,
+                candidates = byNormalized.keys.toList(),
+                limit = limit,
+                maxDistance = maxDistance,
+            )
+        }
+        return ranked.mapNotNull { match -> byNormalized[match.word]?.toWordWithProgress() }
     }
 
     /**

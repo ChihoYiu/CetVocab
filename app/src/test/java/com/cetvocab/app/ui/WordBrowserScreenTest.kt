@@ -3,6 +3,7 @@ package com.cetvocab.app.ui
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -65,6 +66,8 @@ class WordBrowserScreenTest {
                     wordEntity("ability", "能力", 2),
                     wordEntity("absorb", "吸收", 3),
                     wordEntity("apple", "苹果", 4),
+                    // Used by the "did you mean" test: one transposed pair away from "recieve".
+                    wordEntity("receive", "收到；接收", 5),
                 ),
             )
         }
@@ -176,5 +179,68 @@ class WordBrowserScreenTest {
             database.wordDao().byNormalized(CetLevel.CET4.id, "abandon")!!.id
         }
         org.junit.Assert.assertEquals(expectedId, opened)
+    }
+
+    @Test
+    fun `a misspelled query suggests the close spelling`() {
+        composeRule.setContent {
+            CetVocabTheme { WordBrowserScreen(container, onBack = {}, onOpenWord = {}) }
+        }
+        awaitText("abandon")
+
+        // "recieve" is one transposed pair away from "receive" and matches nothing literally, so
+        // the exact pass returns nothing and the edit-distance pass has to answer.
+        composeRule.onNodeWithTag("browser_search").performTextInput("recieve")
+
+        awaitText("拼写相近的单词")
+        composeRule.onNodeWithTag("browser_approximation_note").assertExists()
+        composeRule.onNodeWithText("receive").assertExists()
+        // The suggestion is labelled as a suggestion, never as an exact hit. The row is a clickable
+        // card, so the badge is only addressable in the unmerged tree.
+        org.junit.Assert.assertTrue(
+            composeRule.onAllNodesWithTag("browser_approximation_badge", useUnmergedTree = true)
+                .fetchSemanticsNodes().isNotEmpty(),
+        )
+    }
+
+    @Test
+    fun `an exact hit does not show the correction section`() {
+        composeRule.setContent {
+            CetVocabTheme { WordBrowserScreen(container, onBack = {}, onOpenWord = {}) }
+        }
+        awaitText("abandon")
+
+        composeRule.onNodeWithTag("browser_search").performTextInput("receive")
+        // Wait for the debounced query to actually land (the summary is rendered from the results,
+        // while the search field itself already contains the typed text).
+        awaitText("找到 1 个结果")
+
+        composeRule.onNodeWithTag("browser_approximation_note").assertDoesNotExist()
+    }
+
+    @Test
+    fun `the result row shows the phonetic and the example sentence when the word has one`() {
+        runBlocking {
+            val stored = database.wordDao().byNormalized(CetLevel.CET4.id, "receive")!!
+            database.wordDao().update(
+                stored.copy(
+                    phonetic = "/rɪˈsiːv/",
+                    exampleSentence = "I will receive the letter tomorrow.",
+                    exampleTranslation = "我明天会收到这封信。",
+                ),
+            )
+        }
+        composeRule.setContent {
+            CetVocabTheme { WordBrowserScreen(container, onBack = {}, onOpenWord = {}) }
+        }
+        awaitText("abandon")
+
+        composeRule.onNodeWithTag("browser_search").performTextInput("receive")
+
+        composeRule.waitUntil(timeoutMillis = 10_000) {
+            composeRule.onAllNodesWithText("I will receive the letter tomorrow.", substring = true)
+                .fetchSemanticsNodes().isNotEmpty()
+        }
+        composeRule.onNodeWithText("/rɪˈsiːv/", substring = true).assertExists()
     }
 }

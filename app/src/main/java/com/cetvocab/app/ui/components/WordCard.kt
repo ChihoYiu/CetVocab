@@ -200,7 +200,16 @@ fun WordCard(
             ) { isRevealed ->
                 if (isRevealed) {
                     WordMeaningBlock(word = word)
+                } else if (word.exampleSentence.isNotBlank()) {
+                    // Context before the answer: an English sentence that uses the word, with **no**
+                    // Chinese translation and no meaning — the learner has to infer the sense from
+                    // the sentence, which is exactly the recall step this card exists for. The
+                    // translation appears in `WordMeaningBlock` once the card is revealed.
+                    ExampleHint(sentence = word.exampleSentence)
                 } else {
+                    // No example in the vocabulary (the built-in ECDICT-derived packs had none
+                    // before this iteration, and an imported list may omit it): fall back to the
+                    // original prompt instead of showing an empty box.
                     Text(
                         text = "先回忆一下，再点击卡片查看释义",
                         style = MaterialTheme.typography.bodyMedium,
@@ -208,6 +217,43 @@ fun WordCard(
                     )
                 }
             }
+        }
+    }
+}
+
+/**
+ * The pre-answer example sentence.
+ *
+ * Kept visually quieter than the revealed meaning block: it is a hint, not the answer.
+ */
+@Composable
+private fun ExampleHint(sentence: String) {
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .testTag("study_example_hint"),
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.surfaceContainerLow,
+    ) {
+        Column(
+            modifier = Modifier.padding(Spacing.md),
+            verticalArrangement = Arrangement.spacedBy(Spacing.xs),
+        ) {
+            Text(
+                text = "例句提示",
+                style = MaterialTheme.typography.labelMedium,
+                color = AppTheme.colors.mutedText,
+            )
+            Text(
+                text = sentence,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = "先读例句猜猜它的意思，再查看释义。",
+                style = MaterialTheme.typography.bodySmall,
+                color = AppTheme.colors.mutedText,
+            )
         }
     }
 }

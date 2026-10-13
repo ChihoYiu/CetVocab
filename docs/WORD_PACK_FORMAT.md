@@ -60,6 +60,12 @@
 
 完整可用的示例文件：[`samples/word-pack-sample.json`](samples/word-pack-sample.json)
 
+> 内置词库（`app/src/main/assets/wordpacks/`）比这个格式多一个**包级**字段 `exampleSource`，
+> 用来说明例句的来源与许可（ECDICT 不含例句，例句来自 Tatoeba，CC BY 2.0 FR，见
+> [THIRD-PARTY-NOTICES.md](../THIRD-PARTY-NOTICES.md) 与
+> [WORD_PACK_VALIDATION.md](WORD_PACK_VALIDATION.md) 附录 B）。
+> 你自己导入的文件**不需要**该字段，解析器会忽略未知的包级键。
+
 ## CSV
 
 首行必须是表头。列名大小写不敏感，允许 `snake_case` 与 `camelCase`；

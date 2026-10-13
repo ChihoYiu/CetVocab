@@ -24,6 +24,9 @@ import com.cetvocab.app.domain.motivation.MotivationContext
 import com.cetvocab.app.domain.motivation.MotivationEngine
 import com.cetvocab.app.domain.motivation.MotivationMessage
 import com.cetvocab.app.domain.motivation.MotivationMoment
+import com.cetvocab.app.domain.motivation.StartupTip
+import com.cetvocab.app.domain.motivation.StartupTipCatalogue
+import com.cetvocab.app.domain.motivation.StartupTipPicker
 import com.cetvocab.app.domain.stats.StatsSnapshot
 import com.cetvocab.app.domain.study.NextStep
 import com.cetvocab.app.domain.study.NextStepPlanner
@@ -138,19 +141,43 @@ data class MainUiState(
     val ready: Boolean = false,
     /** Non-null while the built-in vocabulary is being written to the database. */
     val seedProgress: SeedProgress? = null,
+    /** The line to show on the start-up screen; null only before the catalogue has been read. */
+    val startupTip: StartupTip? = null,
+    /** True while the start-up screen is on top. A cold start is the only thing that sets it. */
+    val startupTipVisible: Boolean = false,
 )
 
-/** Holds the settings that drive the theme, and runs one-time start-up work. */
+/**
+ * Holds the settings that drive the theme, runs one-time start-up work, and owns the start-up line.
+ *
+ * The start-up line lives here — not in a screen of its own — because "show it once per cold start"
+ * is a property of the app's launch, not of a destination: a `NavHost` destination would be
+ * recreated by navigation and would then repeat the line on every return to that route.
+ * The chosen id is persisted, so "never the same line twice in a row" survives the process death
+ * that ends every cold start.
+ */
 class MainViewModel(private val container: AppContainer) : ViewModel() {
 
     private val ready = MutableStateFlow(false)
+
+    private val startupTip = MutableStateFlow<StartupTip?>(null)
+
+    private val startupTipVisible = MutableStateFlow(false)
 
     val state: StateFlow<MainUiState> = combine(
         container.settingsRepository.settings,
         ready,
         container.seedProgress,
-    ) { settings, isReady, progress ->
-        MainUiState(settings = settings, ready = isReady, seedProgress = progress)
+        startupTip,
+        startupTipVisible,
+    ) { settings, isReady, progress, tip, tipShown ->
+        MainUiState(
+            settings = settings,
+            ready = isReady,
+            seedProgress = progress,
+            startupTip = tip,
+            startupTipVisible = tipShown,
+        )
     }.stateIn(viewModelScope, SharingStarted.Eagerly, MainUiState())
 
     init {
@@ -160,6 +187,54 @@ class MainViewModel(private val container: AppContainer) : ViewModel() {
             runCatching { container.prepare() }
             ready.value = true
         }
+        viewModelScope.launch { showStartupTip() }
+    }
+
+    /** The learner tapped the start-up screen: leave immediately instead of waiting out the timer. */
+    fun dismissStartupTip() {
+        startupTipVisible.value = false
+    }
+
+    /**
+     * Reads the bundled catalogue, picks a line and keeps it on screen for a short, bounded time.
+     *
+     * The screen doubles as the place where first-launch seeding reports its progress, so the line
+     * is never an extra wait on top of the work the app already had to do: it stays for
+     * [STARTUP_TIP_MIN_MILLIS] and then, if the vocabulary is still being written, up to
+     * [STARTUP_TIP_MAX_EXTRA_MILLIS] longer — after that the progress screen continues on its own.
+     */
+    private suspend fun showStartupTip() {
+        val catalogue = runCatching { container.startupTipSource.load() }.getOrNull()
+        val previousId = runCatching { container.settingsRepository.current().lastStartupTipId }.getOrNull()
+        val chosen = StartupTipPicker.pick(
+            tips = catalogue?.tips.orEmpty(),
+            avoidId = previousId,
+        ) ?: StartupTipCatalogue.FALLBACK
+
+        startupTip.value = chosen
+        startupTipVisible.value = true
+        runCatching { container.settingsRepository.setLastStartupTipId(chosen.id) }
+
+        delay(STARTUP_TIP_MIN_MILLIS)
+        var waited = 0L
+        while (!ready.value && waited < STARTUP_TIP_MAX_EXTRA_MILLIS) {
+            delay(STARTUP_TIP_POLL_MILLIS)
+            waited += STARTUP_TIP_POLL_MILLIS
+        }
+        startupTipVisible.value = false
+    }
+
+    private companion object {
+        /**
+         * How long the line is guaranteed to be visible. Long enough to be read, short enough that
+         * the app still feels like it opens instantly; a tap skips even this.
+         */
+        const val STARTUP_TIP_MIN_MILLIS = 900L
+
+        /** Extra time granted only while the vocabulary is still being prepared. */
+        const val STARTUP_TIP_MAX_EXTRA_MILLIS = 1_600L
+
+        const val STARTUP_TIP_POLL_MILLIS = 100L
     }
 }
 
@@ -1181,13 +1256,22 @@ data class WordBrowserUiState(
     val totalWords: Int = 0,
     val results: List<WordWithProgress> = emptyList(),
     val truncated: Boolean = false,
+    /** "你是不是想找" list; empty unless the exact search found almost nothing. */
+    val approximations: List<WordWithProgress> = emptyList(),
 ) {
     val resultSummary: String
         get() = when {
             query.isBlank() -> "共 $totalWords 个单词"
             truncated -> "结果较多，仅显示前 ${results.size} 个"
+            approximations.isNotEmpty() && results.isEmpty() ->
+                "没有完全匹配，以下是 ${approximations.size} 个拼写相近的单词"
+            approximations.isNotEmpty() ->
+                "找到 ${results.size} 个结果，另有 ${approximations.size} 个拼写相近"
             else -> "找到 ${results.size} 个结果"
         }
+
+    /** True when neither the exact nor the approximate pass produced anything. */
+    val nothingFound: Boolean get() = results.isEmpty() && approximations.isEmpty()
 }
 
 /**
@@ -1196,6 +1280,11 @@ data class WordBrowserUiState(
  * The query is debounced before it reaches SQLite: the complete CET-4/CET-6 tables hold thousands
  * of rows, and running a fresh `LIKE` scan on every keystroke is exactly the kind of work that
  * makes typing feel sluggish. Debouncing also keeps the result list stable while the learner types.
+ *
+ * When the exact pass comes back nearly empty, a second, bounded pass looks for close spellings
+ * (`ApproximateWordMatcher`) so a typo does not end in a dead end. The two lists are kept apart in
+ * the state, and the screen labels the second one, because an approximation must never be presented
+ * as if it were what the learner typed.
  */
 @OptIn(kotlinx.coroutines.FlowPreview::class, kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class WordBrowserViewModel(private val container: AppContainer) : ViewModel() {
@@ -1210,15 +1299,24 @@ class WordBrowserViewModel(private val container: AppContainer) : ViewModel() {
         .flatMapLatest { (level, text) ->
             combine(
                 container.wordRepository.observeWordCount(level),
-                flow { emit(container.wordRepository.search(level, text, WordRepository.SEARCH_LIMIT)) },
-            ) { total, results ->
+                flow {
+                    val exact = container.wordRepository.search(level, text, WordRepository.SEARCH_LIMIT)
+                    val approximate = container.wordRepository.searchApproximate(
+                        level = level,
+                        query = text,
+                        strictMatchCount = exact.size,
+                    )
+                    emit(exact to approximate)
+                },
+            ) { total, (exact, approximate) ->
                 WordBrowserUiState(
                     loading = false,
                     level = level,
                     query = text,
                     totalWords = total,
-                    results = results,
-                    truncated = results.size >= WordRepository.SEARCH_LIMIT,
+                    results = exact,
+                    truncated = exact.size >= WordRepository.SEARCH_LIMIT,
+                    approximations = approximate,
                 )
             }
         }

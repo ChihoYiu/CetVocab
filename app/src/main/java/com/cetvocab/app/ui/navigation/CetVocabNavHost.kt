@@ -133,6 +133,7 @@ fun CetVocabNavHost(
                     onStartMistakeDrill = { navController.navigate(Routes.REVIEW) },
                     onOpenReviewCenter = { navController.navigate(Routes.REVIEW) },
                     onOpenStats = { navController.navigate(Routes.STATS) },
+                    onOpenWordBrowser = { navController.navigate(Routes.WORD_BROWSER) },
                 )
             }
 

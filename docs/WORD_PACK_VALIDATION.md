@@ -4,7 +4,9 @@
 **实测**校验数字。所有数字均由 `tools/wordpack/validate_packs.py` 直接测量得出，
 原始机器可读结果见 `tools/wordpack/validation_report.json`。
 
-* 生成脚本：`tools/wordpack/build_packs.py`
+* 生成脚本：`tools/wordpack/build_packs.py`（第一阶段：ECDICT 词条）
+* 例句脚本：`tools/wordpack/build_tatoeba_pairs.py` + `tools/wordpack/attach_examples.py`
+  （第二阶段：例句，见附录 B）
 * 校验脚本：`tools/wordpack/validate_packs.py`
 * 资产：`cet4.json`、`cet6.json`、`PACK_INFO.json`
 
@@ -170,8 +172,10 @@ MIT 允许在应用内再分发，但**要求保留上述版权声明与许可�
    释义保持原样（含标记），`partOfSpeech` 留空。这样做是为了不丢信息、不做不可靠的猜测。
 4. **音标**：直接取 `phonetic` 列原值；源值不带斜杠，因此在首尾各补一个 `/`（不修改内部字符）。
    由于 ECDICT 只有单一音标，`phonetic` 存该值，`phoneticUs` / `phoneticUk` 均为 `""`。
-5. **不可用字段留空**：`exampleSentence`、`exampleTranslation`、`collocations` 源中不存在，
-   全部输出为 `""` / `[]`。**没有编写任何自造释义、音标或例句。**
+5. **源中不存在的字段留空**：`exampleSentence`、`exampleTranslation`、`collocations` 在 ECDICT 中不存在，
+   第一阶段全部输出为 `""` / `[]`，**没有编写任何自造释义、音标或例句**。
+   例句随后由**第二阶段**（`tools/wordpack/attach_examples.py`）从另一个独立来源补入，
+   该来源、许可与实测覆盖率见 **附录 B**；`collocations` 至今仍为空。
 6. **词条去重**：按 `word.lower()` 在同一 level 内去重，冲突时保留信息量更大的一条
    （信息量 = 有无音标 + 释义条数 + 有无词性）。实测两个列表内均**无**重复，此步骤未实际删除任何行。
 7. **id**：`<level 小写>-<4 位以上序号>`，序号为输出顺序中的 1-based 下标，因此稳定可复现。
@@ -190,10 +194,10 @@ JSON 重新解析、逐对象键集合与 schema 完全一致、字节大小均�
 | --- | ---: | ---: |
 | 文件 | `cet4.json` | `cet6.json` |
 | 词条总数 | **3,849** | **5,407** |
-| 文件字节 | 1,333,569 | 1,861,315 |
-| 文件 MiB | 1.272 | 1.775 |
+| 文件字节 | 1,550,805 | 2,121,198 |
+| 文件 MiB | 1.479 | 2.023 |
 | JSON 可重新解析 | ✅ | ✅ |
-| 包级键集合正确（`version`/`name`/`defaultLevel`/`source`/`license`/`words`） | ✅ | ✅ |
+| 包级键集合正确（`version`/`name`/`defaultLevel`/`source`/`license`/`exampleSource`/`words`） | ✅ | ✅ |
 | 词条键集合与 schema 完全一致 | ✅（0 行异常） | ✅（0 行异常） |
 | 每行 `level` 与本文件一致 | ✅ | ✅ |
 | `defaultLevel` | `CET4` | `CET6` |
@@ -207,8 +211,8 @@ JSON 重新解析、逐对象键集合与 schema 完全一致、字节大小均�
 | `phoneticUk` | 3,849 / 100.00% | 5,407 / 100.00% |
 | `partOfSpeech` | 1,861 / 48.35% | 2,352 / 43.50% |
 | `meanings` | **0 / 0.00%** | **0 / 0.00%** |
-| `exampleSentence` | 3,849 / 100.00% | 5,407 / 100.00% |
-| `exampleTranslation` | 3,849 / 100.00% | 5,407 / 100.00% |
+| `exampleSentence` | 615 / 15.98% | 1,704 / 31.51% |
+| `exampleTranslation` | 615 / 15.98% | 1,704 / 31.51% |
 | `collocations` | 3,849 / 100.00% | 5,407 / 100.00% |
 
 反向（**非空**）比例，便于阅读：
@@ -218,6 +222,7 @@ JSON 重新解析、逐对象键集合与 schema 完全一致、字节大小均�
 | `phonetic` | 3,837（99.69%） | 5,382（99.54%） |
 | `partOfSpeech` | 1,988（51.65%） | 3,055（56.50%） |
 | `meanings` | 3,849（100%） | 5,407（100%） |
+| `exampleSentence` | 3,230（83.92%） | 3,695（68.34%） |
 
 > `phonetic` 为空的 12 / 25 条，是源 `ecdict.csv` 中该单元格本身即为空，不是转换丢失——
 > 清单可由 `fieldCoverage` 与源文件逐行比对复现。
@@ -277,10 +282,14 @@ accord, accordance
 
 | 文件 | 字节 |
 | --- | ---: |
-| `cet4.json` | 1,333,569 |
-| `cet6.json` | 1,861,315 |
-| `PACK_INFO.json` | 2,724 |
-| **合计** | **3,197,608 字节（3.049 MiB）** |
+| `cet4.json` | 1,550,805 |
+| `cet6.json` | 2,121,198 |
+| `manifest.json` | 804 |
+| `PACK_INFO.json` | 7,787 |
+| **合计** | **3,680,594 字节（3.510 MiB）** |
+
+体积增长来自第二阶段的例句（附录 B）：`cet4.json` +217,236 字节、`cet6.json` +259,883 字节，
+相对原资产增加约 15%。安装包内这些 JSON 会被压缩存放，实测 APK 增量远小于此数。
 
 ---
 
@@ -403,3 +412,102 @@ IPA 字母使用**，另用 ASCII 的 `'` 与 `:` 表示重音与长音。这会
 **残余风险（仍未解决）**：记号已是 IPA，但 ECDICT 的**音位体系**仍是金山风格（例如部分元音用 `i`
 表示 /i/ 而非 /ɪ/）。若要严格 IPA 音位，需要另找许可清晰的双口音音标数据源；本轮未采用
 `KyleBing/english-vocabulary` 的音标正是因为其权利链不可追溯（见第 1 节候选比较）。
+
+---
+
+## 附录 B · 迭代补充：离线例句（2026-10 迭代）
+
+### B.1 为什么需要第二个数据源
+
+ECDICT 的 `exampleSentence` / `exampleTranslation` 覆盖率实测为 **0%**（第 5.2 节），
+而产品要求「揭晓答案前展示与词义相关的英文例句」。可选路径只有三条：编造例句（不可接受）、
+运行时联网（与「完全离线」的产品约束冲突）、或**再引入一个许可清晰、真实存在的例句语料**。
+因此本轮引入 Tatoeba 作为**第二个数据源**，并把它定位成词库流水线的**第二阶段**。
+
+### B.2 来源与许可
+
+| 项 | 值 |
+| --- | --- |
+| 项目 | The Tatoeba Project（<https://tatoeba.org>） |
+| 文件 | `eng_sentences.tsv.bz2`、`cmn_sentences.tsv.bz2`、`cmn-eng_links.tsv.bz2` |
+| 下载地址 | `https://downloads.tatoeba.org/exports/per_language/…` |
+| 快照时间 | 2026-10-13T02:09:54Z（UTC） |
+| 许可 | **CC BY 2.0 FR**（<https://creativecommons.org/licenses/by/2.0/fr/>） |
+| 署名 | The Tatoeba Project 及其贡献者；逐句 id 见 `docs/EXAMPLE_SENTENCE_SOURCES.tsv` |
+| 快照指纹 | 三个文件的字节数与 SHA-256 记录在 `tools/wordpack/cache/tatoeba/PROVENANCE.json` |
+
+Tatoeba 是**持续编辑**的语料库，因此这里固定为一份**带日期的快照**：再次下载会得到不同的字节数、
+不同的 SHA-256 和不同的句对数。许可为「署名」型，允许再分发与修改，只要求署名——
+这也是它被采用、而 GPL-3.0 的 `qwerty-learner` 与权利链不清的 `KyleBing/english-vocabulary`
+被否决的原因（第 3 节）。
+
+### B.3 流水线
+
+```text
+build_tatoeba_pairs.py   → cache/tatoeba/cmn-eng-pairs.tsv      （68,553 对）
+attach_examples.py       → cet4.json / cet6.json（写入例句，version 2 → 3）
+                         → manifest.json / PACK_INFO.json
+                         → docs/EXAMPLE_SENTENCE_SOURCES.tsv    （逐句可追溯）
+                         → tools/wordpack/example_attachment_report.json（实测数字）
+```
+
+排版与句形过滤（在配对阶段之后再做一次，宁缺勿滥）：
+英文 15–200 字符、以大写字母开头并以 `.!?` 结尾、4–14 个词、含数字或引号或分号或全大写缩写的句子
+一律丢弃；中文 4–60 字符且必须含汉字、不含连续两个以上拉丁字母。
+
+每个词只选**一句**，选择顺序为：
+
+1. **原形优先**：句中直接出现该单词本身，优先于只出现它的规则变形；
+2. **质量档位优先**：档位 =（超纲词数，是否含人名，中文译文是否由繁体转换而来）；
+   「不超纲」的判定基准 = CET-4/CET-6 词表本身 ∪ ECDICT 词频排名前 8,000 的核心词 ∪ 约 250 个功能词；
+3. **句子更短者优先**，最后以 Tatoeba 句 id 兜底（保证可复现）。
+
+繁体中文译文用 OpenCC 的 `TSPhrases` + `TSCharacters` 表做**最长匹配**转写。
+OpenCC 为 Apache-2.0，**仅作为构建期工具使用，其词表不随应用分发**。
+只含简体字的句子不做任何替换，避免把简体误改成异体字。
+
+### B.4 实测覆盖率（`example_attachment_report.json` / `validate_packs.py`）
+
+| 指标 | CET-4 | CET-6 | 词库整体 |
+| --- | ---: | ---: | ---: |
+| 词条数 | 3,849 | 5,407 | 9,256 |
+| **有例句的词条** | **3,230（83.92%）** | **3,695（68.34%）** | **6,925（74.81%）** |
+| 无例句（字段留空） | 619 | 1,712 | 2,331 |
+| 其中：原形直接命中 | 2,961 | 3,294 | — |
+| 其中：经规则变形命中 | 269 | 401 | 670 |
+| 其中：译文由繁体转写 | 537 | 779 | 1,316 |
+
+去重后的**独立词**视角（CET-4 与 CET-6 有 3,451 个词重叠，独立词共 **5,805** 个）：
+**4,054 个词（69.84%）有例句**，1,751 个没有。
+
+其他实测数字：可用句对 46,460（源自 68,553 对）、独立句子 3,704 句用于 4,054 个词（最高复用 6 次）、
+英文句长 4–14 词（平均 6.5）、中文译文 4–31 字（平均 10.5）、
+**「句中不含该词任何形式」的例句 0 条**（由 `BuiltInPackAssetTest` 与核对脚本双重验证）。
+
+### B.5 缺失数据的处理方式
+
+* 没有合适句子的词条，`exampleSentence` / `exampleTranslation` **保持为空字符串**，不编造、不用同一句式套用；
+* 应用侧对空例句有明确降级：学习卡回到原来的「先回忆一下，再点击卡片查看释义」提示，
+  词库搜索的结果行不显示例句行，朗读例句的按钮不出现（`WordCard` 与 `WordBrowserRow` 均以 `isNotBlank()` 判断）；
+* 词库搜索页顶部会说明结果范围就是本地词库、不存在词库以外的词条。
+
+### B.6 残余风险（如实记录）
+
+1. **例句来自众包语料**，个别句子质量一般：可能偏短、像片段、或译文取意译而非直译
+   （例如 `bough` 的英文谚语配了中文谚语「稻穗越饱满越低头」）。筛选规则只能降低概率，不能保证逐句完美。
+2. **不区分多义词**：选择时只看拼写与可读性，不看该句用的是哪个义项。
+   背词模式下卡片会列出全部释义，因此不会出现「例句对不上题目」的直接矛盾；
+   但严格意义上的义项对齐需要词义标注数据，本轮**没有**做，也不谎称做了。
+3. **繁体转写是字符/短语级的机械转换**，极少数专有名词或异体字可能不理想；
+   转换只发生在含繁体字的句子上，且转换结果可逐句回溯。
+4. **署名依赖逐句 id 表**：`docs/EXAMPLE_SENTENCE_SOURCES.tsv` 记录了每个词所用句子的
+   Tatoeba 句 id，据此可在 tatoeba.org 上查到具体贡献者；若该表被删除，署名就只剩项目级署名。
+5. 覆盖率对 CET-6 明显偏低（68.34%，独立词口径更低），越到低频词越难找到既简单又含该词的句子。
+
+### B.7 自动化守护
+
+* `BuiltInPackAssetTest.the shipped packs carry offline example sentences that contain their word`：
+  断言覆盖率下限、例句与译文成对出现、句长 4–20 词、无数字、无汉字混入英文句、
+  **句中确实出现该词或它的规则变形**（变形规则与脚本一致，且刻意保守，不接受 `kind` 之于 `kin` 这类形近词）；
+* `attach_examples.py` 自身在每个词选定句子时也做同样的「原形或变形必须出现」检查；
+* `validate_packs.py` 复跑后仍报告 0 重复 id、0 结构异常、词条数与来源行数一致。

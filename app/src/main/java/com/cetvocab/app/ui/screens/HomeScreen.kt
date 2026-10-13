@@ -3,7 +3,11 @@ package com.cetvocab.app.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -95,6 +99,8 @@ fun HomeScreen(
     onOpenReviewCenter: () -> Unit,
     onOpenStats: () -> Unit,
     onOpenInsightAction: (com.cetvocab.app.domain.insight.Insight) -> Unit = {},
+    /** Opens the vocabulary search; the entry lives in the app bar so the dashboard stays as it is. */
+    onOpenWordBrowser: () -> Unit = {},
 ) {
     val viewModel: HomeViewModel = viewModel(factory = ViewModelFactories.home(container))
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -120,6 +126,21 @@ fun HomeScreen(
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background,
                 ),
+                actions = {
+                    // Vocabulary search. A single icon here — rather than another card in the
+                    // dashboard — keeps the home screen's section order (and its "one next action"
+                    // rule) exactly as it was, while making the feature reachable from the screen
+                    // the learner opens first. It stays available offline: it queries the same
+                    // local database the study queue uses.
+                    IconButton(
+                        onClick = onOpenWordBrowser,
+                        modifier = Modifier
+                            .testTag("home_open_word_browser")
+                            .semantics { contentDescription = "词库搜索" },
+                    ) {
+                        Icon(Icons.Filled.Search, contentDescription = null)
+                    }
+                },
             )
         },
         containerColor = MaterialTheme.colorScheme.background,

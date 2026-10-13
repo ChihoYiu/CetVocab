@@ -69,9 +69,10 @@ android {
         applicationId = "com.cetvocab.app"
         minSdk = 26
         targetSdk = 36
-        // 1.0.2：新增「乱序刷单词」设置，并修复设置页色块对齐；1.0.1 是首个正式签名版本。
-        versionCode = 3
-        versionName = "1.0.2"
+        // 1.0.3：新增 398 条冷启动开屏提示语、答题前英文例句提示、词库搜索（首页入口 + 拼写相近匹配 + 例句）；
+        // 1.0.2 新增「乱序刷单词」与设置页对齐修复；1.0.1 是首个正式签名版本。
+        versionCode = 4
+        versionName = "1.0.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
     }

@@ -14,11 +14,13 @@
 | 文档 | 内容 |
 | --- | --- |
 | [发布签名](RELEASE_SIGNING.md) | 如何生成密钥库、如何在本机与 CI 出**已签名**的正式包（密钥绝不入库） |
-| [词库校验报告](WORD_PACK_VALIDATION.md) | 内置词库的来源（ECDICT，MIT）、许可、完整性实测数字、音标转写说明 |
+| [词库校验报告](WORD_PACK_VALIDATION.md) | 内置词库的来源（ECDICT，MIT）、许可、完整性实测数字、音标转写说明；**附录 B：例句（Tatoeba，CC BY 2.0 FR）的选取规则、覆盖率与残余风险** |
+| [例句逐句来源表](EXAMPLE_SENTENCE_SOURCES.tsv) | 每个词所用例句对应的 Tatoeba 句 id（署名与追溯用，机器可读） |
 | [发音验证（历史）](PRONUNCIATION_VERIFICATION.md) | 已移除的真人录音模块的线上实测记录：美/英命中率、文件字节、许可证 |
 | [交付报告](dev/DELIVERY_REPORT.md) | 首次交付时的功能清单、数据库表与迁移、算法规则、兼容性结果 |
 | [迭代 2：稳定性 / 词库 / 状态栏](dev/ITERATION_2_REPORT.md) | 动画性能根因、内置词库完整性、状态栏反色的实测数据 |
 | [迭代 3：发音 / 进度 / 分析 / 激励](dev/ITERATION_3_REPORT.md) | 改系统 TTS 的原因与实现、首页四段式、8 条分析规则、7 个激励场景 |
+| [迭代 4：开屏提示语 / 例句提示 / 词库搜索](dev/ITERATION_4_REPORT.md) | 三件事的实现方式、398 条提示语的校验、例句覆盖率与许可、搜索匹配方式与实测结果 |
 | [产品优化方案](dev/PRODUCT_OPTIMIZATION_PLAN.md) | 上述迭代的产品依据：问题分析、页面设计、指标口径、验收标准、风险 |
 
 > `dev/` 下的文档保留的是**当时的判断与实测数据**（包括已被推翻的结论，例如曾采用真人录音后又改为系统 TTS）。

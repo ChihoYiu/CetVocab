@@ -1,9 +1,9 @@
 {
   "CET4": {
     "file": "cet4.json",
-    "sizeBytes": 1337450,
-    "sizeKiB": 1306.1,
-    "sizeMiB": 1.275,
+    "sizeBytes": 1550805,
+    "sizeKiB": 1514.5,
+    "sizeMiB": 1.479,
     "packKeysOk": true,
     "declaredLevel": "CET4",
     "allRowsLevelMatch": true,
@@ -63,14 +63,14 @@
         "emptyPct": 48.35
       },
       "exampleSentence": {
-        "empty": 3849,
-        "present": 0,
-        "emptyPct": 100.0
+        "empty": 619,
+        "present": 3230,
+        "emptyPct": 16.08
       },
       "exampleTranslation": {
-        "empty": 3849,
-        "present": 0,
-        "emptyPct": 100.0
+        "empty": 619,
+        "present": 3230,
+        "emptyPct": 16.08
       },
       "meanings": {
         "empty": 0,
@@ -88,9 +88,9 @@
   },
   "CET6": {
     "file": "cet6.json",
-    "sizeBytes": 1866961,
-    "sizeKiB": 1823.2,
-    "sizeMiB": 1.78,
+    "sizeBytes": 2121198,
+    "sizeKiB": 2071.5,
+    "sizeMiB": 2.023,
     "packKeysOk": true,
     "declaredLevel": "CET6",
     "allRowsLevelMatch": true,
@@ -150,14 +150,14 @@
         "emptyPct": 43.5
       },
       "exampleSentence": {
-        "empty": 5407,
-        "present": 0,
-        "emptyPct": 100.0
+        "empty": 1712,
+        "present": 3695,
+        "emptyPct": 31.66
       },
       "exampleTranslation": {
-        "empty": 5407,
-        "present": 0,
-        "emptyPct": 100.0
+        "empty": 1712,
+        "present": 3695,
+        "emptyPct": 31.66
       },
       "meanings": {
         "empty": 0,
